@@ -28,34 +28,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef EXTRACTOR_HPP
 #define EXTRACTOR_HPP
 
-#include "extractor/edge_based_edge.hpp"
-#include "extractor/edge_based_graph_factory.hpp"
+#include <unordered_set>
+
 #include "extractor/extractor_config.hpp"
-#include "extractor/graph_compressor.hpp"
-#include "extractor/maneuver_override.hpp"
-#include "extractor/packed_osm_ids.hpp"
+#include "extractor/turn_lane_types.hpp"
+#include "extractor/name_table.hpp"
+#include "extractor/restriction_index.hpp"
 
-#include "guidance/guidance_processing.hpp"
-#include "guidance/turn_data_container.hpp"
-
-#include "util/guidance/bearing_class.hpp"
-#include "util/guidance/entry_class.hpp"
-#include "util/guidance/turn_lanes.hpp"
+#include "util/node_based_graph.hpp"
 
 #include "util/typedefs.hpp"
 
 namespace osrm
 {
+namespace util
+{
+struct Coordinate;
+}
 namespace extractor
 {
+struct EdgeBasedEdge;
+class EdgeBasedGraphFactory;
+struct EdgeBasedNodeSegment;
+class GraphCompressor;
+struct UnresolvedManeuverOverride;
+struct TurnRestriction;
+struct ConditionalTurnRestriction;
+class CompressedEdgeContainer;
+
 
 class ScriptingEnvironment;
 struct ProfileProperties;
 
-class Extractor
+class Extractor final
 {
   public:
-    Extractor(ExtractorConfig extractor_config) : config(std::move(extractor_config)) {}
+    explicit Extractor(ExtractorConfig extractor_config) : config(std::move(extractor_config)) {}
+    ~Extractor() = default;
+    Extractor(const Extractor&) = delete;
+    const Extractor& operator=(const Extractor&) = delete;
     int run(ScriptingEnvironment &scripting_environment);
 
   private:

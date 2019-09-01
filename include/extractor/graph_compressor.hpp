@@ -1,10 +1,8 @@
 #ifndef GEOMETRY_COMPRESSOR_HPP
 #define GEOMETRY_COMPRESSOR_HPP
 
-#include "extractor/scripting_environment.hpp"
 #include "util/typedefs.hpp"
 
-#include "extractor/maneuver_override.hpp"
 #include "util/node_based_graph.hpp"
 
 #include <memory>
@@ -18,6 +16,9 @@ namespace extractor
 
 class CompressedEdgeContainer;
 struct TurnRestriction;
+struct ConditionalTurnRestriction;
+struct UnresolvedManeuverOverride;
+class ScriptingEnvironment;
 
 class GraphCompressor
 {

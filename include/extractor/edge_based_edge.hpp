@@ -1,7 +1,6 @@
 #ifndef EDGE_BASED_EDGE_HPP
 #define EDGE_BASED_EDGE_HPP
 
-#include "extractor/travel_mode.hpp"
 #include "util/typedefs.hpp"
 #include <tuple>
 

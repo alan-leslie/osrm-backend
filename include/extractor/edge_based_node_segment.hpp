@@ -1,7 +1,6 @@
 #ifndef OSRM_EXTRACT_EDGE_BASED_NODE_SEGMENT_HPP
 #define OSRM_EXTRACT_EDGE_BASED_NODE_SEGMENT_HPP
 
-#include "extractor/travel_mode.hpp"
 #include "util/typedefs.hpp"
 
 #include <boost/assert.hpp>

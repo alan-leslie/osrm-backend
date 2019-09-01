@@ -2,6 +2,8 @@
 
 #include "extractor/compressed_node_based_graph_edge.hpp"
 #include "extractor/edge_based_edge.hpp"
+#include "extractor/edge_based_node_segment.hpp"
+#include "extractor/edge_based_graph_factory.hpp"
 #include "extractor/extraction_containers.hpp"
 #include "extractor/extraction_node.hpp"
 #include "extractor/extraction_relation.hpp"
@@ -15,11 +17,12 @@
 #include "extractor/restriction_filter.hpp"
 #include "extractor/restriction_parser.hpp"
 #include "extractor/scripting_environment.hpp"
+#include "extractor/suffix_table.hpp"
+
 
 #include "guidance/files.hpp"
 #include "guidance/guidance_processing.hpp"
 #include "guidance/segregated_intersection_classification.hpp"
-#include "guidance/turn_data_container.hpp"
 
 #include "storage/io.hpp"
 

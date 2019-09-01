@@ -1,6 +1,7 @@
 #include "guidance/guidance_processing.hpp"
 #include "guidance/turn_analysis.hpp"
 #include "guidance/turn_lane_handler.hpp"
+#include "extractor/way_restriction_map.hpp"
 
 #include "extractor/intersection/intersection_analysis.hpp"
 

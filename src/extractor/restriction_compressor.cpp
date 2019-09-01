@@ -1,5 +1,6 @@
 #include "extractor/restriction_compressor.hpp"
 #include "extractor/restriction.hpp"
+#include "extractor/maneuver_override.hpp"
 
 #include <algorithm>
 #include <boost/assert.hpp>

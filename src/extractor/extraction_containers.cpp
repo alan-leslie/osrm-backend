@@ -5,6 +5,7 @@
 #include "extractor/name_table.hpp"
 #include "extractor/restriction.hpp"
 #include "extractor/serialization.hpp"
+#include "extractor/scripting_environment.hpp"
 
 #include "util/coordinate_calculation.hpp"
 

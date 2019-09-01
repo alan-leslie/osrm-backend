@@ -5,7 +5,7 @@
 #include "extractor/internal_extractor_edge.hpp"
 #include "extractor/query_node.hpp"
 #include "extractor/restriction.hpp"
-#include "extractor/scripting_environment.hpp"
+#include "extractor/maneuver_override.hpp"
 
 #include "storage/tar_fwd.hpp"
 
@@ -13,6 +13,8 @@ namespace osrm
 {
 namespace extractor
 {
+class ScriptingEnvironment;
+
 
 /**
  * Uses  memory containers to store all the data that

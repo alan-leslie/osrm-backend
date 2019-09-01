@@ -1,14 +1,13 @@
 #ifndef OSRM_GUIDANCE_GUIDANCE_RUNNER_HPP
 #define OSRM_GUIDANCE_GUIDANCE_RUNNER_HPP
 
+#include <unordered_set>
+
 #include "guidance/turn_data_container.hpp"
 
-#include "extractor/compressed_edge_container.hpp"
 #include "extractor/name_table.hpp"
-#include "extractor/node_data_container.hpp"
-#include "extractor/suffix_table.hpp"
 #include "extractor/turn_lane_types.hpp"
-#include "extractor/way_restriction_map.hpp"
+#include "extractor/restriction_index.hpp"
 
 #include "util/coordinate.hpp"
 #include "util/guidance/bearing_class.hpp"
@@ -16,10 +15,17 @@
 #include "util/guidance/turn_lanes.hpp"
 #include "util/node_based_graph.hpp"
 
-#include <unordered_set>
+
+#include "util/typedefs.hpp"
 
 namespace osrm
 {
+namespace extractor
+{
+class CompressedEdgeContainer;
+class SuffixTable;
+class WayRestrictionMap;
+}
 namespace guidance
 {
 using BearingClassesVector = std::vector<BearingClassID>;

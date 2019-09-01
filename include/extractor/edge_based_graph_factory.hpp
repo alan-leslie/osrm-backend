@@ -3,27 +3,6 @@
 #ifndef EDGE_BASED_GRAPH_FACTORY_HPP_
 #define EDGE_BASED_GRAPH_FACTORY_HPP_
 
-#include "extractor/compressed_edge_container.hpp"
-#include "extractor/conditional_turn_penalty.hpp"
-#include "extractor/edge_based_edge.hpp"
-#include "extractor/edge_based_node_segment.hpp"
-#include "extractor/extraction_turn.hpp"
-#include "extractor/maneuver_override.hpp"
-#include "extractor/name_table.hpp"
-#include "extractor/nbg_to_ebg.hpp"
-#include "extractor/node_data_container.hpp"
-#include "extractor/query_node.hpp"
-#include "extractor/restriction_index.hpp"
-#include "extractor/turn_lane_types.hpp"
-#include "extractor/way_restriction_map.hpp"
-
-#include "util/concurrent_id_map.hpp"
-#include "util/deallocating_vector.hpp"
-#include "util/node_based_graph.hpp"
-#include "util/typedefs.hpp"
-
-#include "storage/io.hpp"
-
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
@@ -35,11 +14,26 @@
 #include <unordered_set>
 #include <vector>
 
+#include "extractor/conditional_turn_penalty.hpp"
+#include "extractor/edge_based_edge.hpp"
+#include "extractor/edge_based_node_segment.hpp"
+#include "extractor/turn_lane_types.hpp"
+#include "extractor/name_table.hpp"
+#include "extractor/restriction_index.hpp"
+
+#include "util/node_based_graph.hpp"
+#include "util/deallocating_vector.hpp"
+
+#include "util/typedefs.hpp"
+
 namespace osrm
 {
 namespace extractor
 {
-
+class CompressedEdgeContainer;
+struct UnresolvedManeuverOverride;
+class WayRestrictionMap;
+struct NBGToEBG;
 class ScriptingEnvironment;
 
 namespace lookup

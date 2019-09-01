@@ -21,6 +21,7 @@
 #include "util/lua_util.hpp"
 #include "util/typedefs.hpp"
 
+#include <osmium/memory/buffer.hpp>
 #include <osmium/osm.hpp>
 
 #include <memory>

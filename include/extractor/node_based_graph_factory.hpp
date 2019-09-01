@@ -2,11 +2,9 @@
 #define OSRM_EXTRACTOR_NODE_BASED_GRAPH_FACTORY_HPP_
 
 #include "extractor/compressed_edge_container.hpp"
-#include "extractor/maneuver_override.hpp"
 #include "extractor/node_based_edge.hpp"
 #include "extractor/node_data_container.hpp"
 #include "extractor/packed_osm_ids.hpp"
-#include "extractor/scripting_environment.hpp"
 
 #include "util/coordinate.hpp"
 #include "util/node_based_graph.hpp"
@@ -22,6 +20,10 @@ namespace osrm
 {
 namespace extractor
 {
+class ScriptingEnvironment;
+struct TurnRestriction;
+struct ConditionalTurnRestriction;
+struct UnresolvedManeuverOverride;
 
 // Turn the output of the extraction process into a graph that represents junctions as nodes and
 // ways as edges between these nodes. The graph forms the further input for OSRMs creation of the

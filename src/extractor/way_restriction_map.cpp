@@ -1,4 +1,5 @@
 #include "extractor/way_restriction_map.hpp"
+#include "extractor/restriction.hpp"
 #include "util/for_each_pair.hpp"
 
 #include <functional>

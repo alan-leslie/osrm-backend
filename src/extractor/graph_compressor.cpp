@@ -4,6 +4,9 @@
 #include "extractor/extraction_turn.hpp"
 #include "extractor/restriction.hpp"
 #include "extractor/restriction_compressor.hpp"
+#include "extractor/scripting_environment.hpp"
+#include "extractor/profile_properties.hpp"
+
 #include "guidance/intersection.hpp"
 
 #include "util/dynamic_graph.hpp"

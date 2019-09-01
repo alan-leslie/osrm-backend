@@ -10,6 +10,7 @@
 #include "util/for_each_pair.hpp"
 #include "util/guidance/turn_lanes.hpp"
 #include "util/log.hpp"
+#include "util/exception.hpp"
 
 #include <boost/numeric/conversion/cast.hpp>
 #include <boost/optional/optional.hpp>

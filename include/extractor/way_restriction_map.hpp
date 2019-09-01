@@ -7,9 +7,7 @@
 // to access the turn restrictions
 #include <boost/unordered_map.hpp>
 
-#include "extractor/restriction.hpp"
 #include "extractor/restriction_index.hpp"
-#include "util/integer_range.hpp"
 #include "util/typedefs.hpp"
 
 // Given the compressed representation of via-way turn restrictions, we provide a fast access into
@@ -18,6 +16,7 @@ namespace osrm
 {
 namespace extractor
 {
+struct ConditionalTurnRestriction;
 
 // The WayRestrictionMap uses ConditionalTurnRestrictions in general. Most restrictions will have
 // empty conditions, though.

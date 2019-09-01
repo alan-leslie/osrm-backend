@@ -1,8 +1,6 @@
 #ifndef OSRM_EXTRACTOR_RESTRICTION_COMPRESSOR_HPP_
 #define OSRM_EXTRACTOR_RESTRICTION_COMPRESSOR_HPP_
 
-#include "extractor/maneuver_override.hpp"
-#include "extractor/restriction.hpp"
 #include "util/typedefs.hpp"
 
 #include <boost/unordered_map.hpp>
@@ -15,6 +13,9 @@ namespace extractor
 
 struct NodeRestriction;
 struct TurnRestriction;
+struct UnresolvedManeuverOverride;
+struct ConditionalTurnRestriction;
+struct NodeBasedTurn;
 
 // OSRM stores restrictions in the form node -> node -> node instead of way -> node -> way (or
 // way->way->way) as it is done in OSM. These restrictions need to match the state of graph

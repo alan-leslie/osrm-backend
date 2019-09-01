@@ -1,12 +1,7 @@
 #ifndef SCRIPTING_ENVIRONMENT_HPP
 #define SCRIPTING_ENVIRONMENT_HPP
 
-#include "extractor/internal_extractor_edge.hpp"
 #include "extractor/maneuver_override.hpp"
-#include "extractor/profile_properties.hpp"
-#include "extractor/restriction.hpp"
-
-#include <osmium/memory/buffer.hpp>
 
 #include <boost/optional/optional.hpp>
 
@@ -18,6 +13,11 @@ namespace osmium
 class Node;
 class Way;
 class Relation;
+
+namespace memory
+{
+class Buffer;
+}
 }
 
 namespace osrm
@@ -38,6 +38,9 @@ struct ExtractionNode;
 struct ExtractionWay;
 struct ExtractionTurn;
 struct ExtractionSegment;
+struct ProfileProperties;
+struct InputConditionalTurnRestriction;
+
 
 /**
  * Abstract class that handles processing osmium ways, nodes and relation objects by applying

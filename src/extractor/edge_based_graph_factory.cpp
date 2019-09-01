@@ -1,6 +1,8 @@
 #include "extractor/edge_based_graph_factory.hpp"
+#include "extractor/way_restriction_map.hpp"
+
 #include "extractor/conditional_turn_penalty.hpp"
-#include "extractor/edge_based_edge.hpp"
+#include "extractor/extraction_turn.hpp"
 #include "extractor/files.hpp"
 #include "extractor/intersection/intersection_analysis.hpp"
 #include "extractor/scripting_environment.hpp"
