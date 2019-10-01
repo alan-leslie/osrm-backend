@@ -1,4 +1,5 @@
 #include "extractor/node_data_container.hpp"
+#include "customizer/customizer_config.hpp"
 
 #include "customizer/cell_customizer.hpp"
 #include "customizer/customizer.hpp"

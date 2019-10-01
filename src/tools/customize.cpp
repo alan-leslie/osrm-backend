@@ -1,4 +1,5 @@
 #include "customizer/customizer.hpp"
+#include "customizer/customizer_config.hpp"
 
 #include "osrm/exception.hpp"
 #include "util/log.hpp"
