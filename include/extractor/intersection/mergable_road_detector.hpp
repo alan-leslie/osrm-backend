@@ -8,7 +8,7 @@
 #include "extractor/restriction_index.hpp"
 #include "extractor/turn_lane_types.hpp"
 
-#include "guidance/intersection.hpp"
+#include "extractor/intersection/intersection_edge.hpp"
 
 #include "util/coordinate.hpp"
 #include "util/node_based_graph.hpp"
@@ -154,7 +154,7 @@ class MergableRoadDetector
     //             .  .
     // but will allow roads merging for intersections like
     //           -------
-    //          /       \ 
+    //          /       \ - qtcreator makes a mess of this
     //      ----         ----
     //          \       /
     //           -------
