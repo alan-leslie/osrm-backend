@@ -42,7 +42,7 @@ struct ConnectedRoad final : extractor::intersection::IntersectionViewData
     LaneDataID lane_data_id;
 
     // used to sort the set of connected roads (we require sorting throughout turn handling)
-    bool compareByAngle(const ConnectedRoad &other) const;
+    // bool compareByAngle(const ConnectedRoad &other) const;
 
     // make a left turn into an equivalent right turn and vice versa
     void mirror()
