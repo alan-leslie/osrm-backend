@@ -18,4 +18,16 @@ BOOST_AUTO_TEST_CASE(test_customize_with_invalid_config)
                       std::exception); // including osrm::util::exception, etc.
 }
 
+BOOST_AUTO_TEST_CASE(test_customize_with_valid_config)
+{
+    using namespace osrm;
+
+    osrm::CustomizationConfig customization_config;
+    customization_config.base_path = "/data/monaco/monaco.osm";
+    customization_config.UseDefaultOutputNames(customization_config.base_path);
+
+    customization_config.requested_num_threads = tbb::task_scheduler_init::default_num_threads();
+    BOOST_CHECK_NO_THROW(osrm::customize(customization_config));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
