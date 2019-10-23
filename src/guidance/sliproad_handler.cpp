@@ -12,7 +12,7 @@
 
 #include <boost/assert.hpp>
 
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
 using osrm::util::angularDeviation;
 
 namespace osrm
@@ -333,8 +333,8 @@ operator()(const NodeID /*nid*/, const EdgeID source_edge_id, Intersection inter
                     if (next_to_crossing_node == node_based_graph.GetTarget(road.eid))
                     {
                         auto direction = getTurnDirection(road.angle);
-                        return direction == DirectionModifier::SharpRight ||
-                               direction == DirectionModifier::SharpLeft;
+                        return direction == util::guidance::DirectionModifier::SharpRight ||
+                               direction == util::guidance::DirectionModifier::SharpLeft;
                     }
                     return false;
                 });
@@ -565,10 +565,10 @@ operator()(const NodeID /*nid*/, const EdgeID source_edge_id, Intersection inter
                  util::bearing::angleBetween(candidate_road.perceived_bearing,
                                              crossing_road.perceived_bearing) <
                      FUZZY_ANGLE_DIFFERENCE &&
-                 (getTurnDirection(candidate_road.angle) == DirectionModifier::SharpRight ||
-                  getTurnDirection(candidate_road.angle) == DirectionModifier::SharpLeft)))
+                 (getTurnDirection(candidate_road.angle) == util::guidance::DirectionModifier::SharpRight ||
+                  getTurnDirection(candidate_road.angle) == util::guidance::DirectionModifier::SharpLeft)))
             {
-                sliproad.instruction.type = TurnType::Sliproad;
+                sliproad.instruction.type = util::guidance::TurnType::Sliproad;
                 sliproad_found = true;
                 break;
             }
@@ -589,7 +589,7 @@ operator()(const NodeID /*nid*/, const EdgeID source_edge_id, Intersection inter
                         main_road_intersection->node)
                 {
 
-                    sliproad.instruction.type = TurnType::Sliproad;
+                    sliproad.instruction.type = util::guidance::TurnType::Sliproad;
                     sliproad_found = true;
                     break;
                 }
@@ -600,28 +600,28 @@ operator()(const NodeID /*nid*/, const EdgeID source_edge_id, Intersection inter
     // Now in case we found a Sliproad and assigned the corresponding type to the road,
     // it could be that the intersection from which the Sliproad splits off was a Fork before.
     // In those cases the obvious non-Sliproad is now obvious and we discard the Fork turn type.
-    if (sliproad_found && main_road.instruction.type == TurnType::Fork)
+    if (sliproad_found && main_road.instruction.type == util::guidance::TurnType::Fork)
     {
         const auto &main_data = node_based_graph.GetEdgeData(main_road.eid);
         const auto &main_annotation = node_data_container.GetAnnotation(main_data.annotation_data);
         if (isSameName(source_edge_id, main_road.eid))
         {
             if (angularDeviation(main_road.angle, STRAIGHT_ANGLE) < 5)
-                intersection[*obvious].instruction.type = TurnType::Suppressed;
+                intersection[*obvious].instruction.type = util::guidance::TurnType::Suppressed;
             else
-                intersection[*obvious].instruction.type = TurnType::Continue;
+                intersection[*obvious].instruction.type = util::guidance::TurnType::Continue;
             intersection[*obvious].instruction.direction_modifier =
                 getTurnDirection(intersection[*obvious].angle);
         }
         else if (!name_table.GetNameForID(main_annotation.name_id).empty())
         {
-            intersection[*obvious].instruction.type = TurnType::NewName;
+            intersection[*obvious].instruction.type = util::guidance::TurnType::NewName;
             intersection[*obvious].instruction.direction_modifier =
                 getTurnDirection(intersection[*obvious].angle);
         }
         else
         {
-            intersection[*obvious].instruction.type = TurnType::Suppressed;
+            intersection[*obvious].instruction.type = util::guidance::TurnType::Suppressed;
         }
     }
 
@@ -651,8 +651,8 @@ boost::optional<std::size_t> SliproadHandler::getObviousIndexWithSliproads(
         return boost::none;
     }
 
-    const auto forking = intersection[1].instruction.type == TurnType::Fork &&
-                         intersection[2].instruction.type == TurnType::Fork;
+    const auto forking = intersection[1].instruction.type == util::guidance::TurnType::Fork &&
+                         intersection[2].instruction.type == util::guidance::TurnType::Fork;
 
     if (!forking)
     {

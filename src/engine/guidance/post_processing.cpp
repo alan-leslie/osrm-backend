@@ -1,6 +1,5 @@
 #include "engine/guidance/post_processing.hpp"
-#include "guidance/constants.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "engine/guidance/assemble_steps.hpp"
 #include "engine/guidance/lane_processing.hpp"
@@ -29,7 +28,7 @@ namespace engine
 {
 namespace guidance
 {
-using namespace osrm::guidance;
+using namespace osrm::util::guidance;
 
 using RouteStepIterator = std::vector<osrm::engine::guidance::RouteStep>::iterator;
 
@@ -599,11 +598,11 @@ void applyOverrides(const datafacade::BaseDataFacade &facade,
             }
             util::Log(logDEBUG) << std::endl;
             util::Log(logDEBUG) << "Override type is "
-                                << osrm::guidance::internalInstructionTypeToString(
+                                << osrm::util::guidance::internalInstructionTypeToString(
                                        maneuver_relation.override_type)
                                 << std::endl;
             util::Log(logDEBUG) << "Override direction is "
-                                << osrm::guidance::instructionModifierToString(
+                                << osrm::util::guidance::instructionModifierToString(
                                        maneuver_relation.direction)
                                 << std::endl;
 
@@ -688,25 +687,25 @@ void applyOverrides(const datafacade::BaseDataFacade &facade,
                                         << std::distance(steps.begin(), steps.end()) -
                                                std::distance(step_to_update, steps.end())
                                         << std::endl;
-                    if (maneuver_relation.override_type != osrm::guidance::TurnType::MaxTurnType)
+                    if (maneuver_relation.override_type != osrm::util::guidance::TurnType::MaxTurnType)
                     {
                         util::Log(logDEBUG) << "    instruction was "
-                                            << osrm::guidance::internalInstructionTypeToString(
+                                            << osrm::util::guidance::internalInstructionTypeToString(
                                                    step_to_update->maneuver.instruction.type)
                                             << " now "
-                                            << osrm::guidance::internalInstructionTypeToString(
+                                            << osrm::util::guidance::internalInstructionTypeToString(
                                                    maneuver_relation.override_type)
                                             << std::endl;
                         step_to_update->maneuver.instruction.type = maneuver_relation.override_type;
                     }
                     if (maneuver_relation.direction !=
-                        osrm::guidance::DirectionModifier::MaxDirectionModifier)
+                        osrm::util::guidance::DirectionModifier::MaxDirectionModifier)
                     {
                         util::Log(logDEBUG)
                             << "    direction was "
-                            << osrm::guidance::instructionModifierToString(
+                            << osrm::util::guidance::instructionModifierToString(
                                    step_to_update->maneuver.instruction.direction_modifier)
-                            << " now " << osrm::guidance::instructionModifierToString(
+                            << " now " << osrm::util::guidance::instructionModifierToString(
                                               maneuver_relation.direction)
                             << std::endl;
                         step_to_update->maneuver.instruction.direction_modifier =

@@ -1,12 +1,12 @@
 #include "guidance/segregated_intersection_classification.hpp"
 #include "extractor/intersection/coordinate_extractor.hpp"
 #include "extractor/node_based_graph_factory.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "util/coordinate_calculation.hpp"
 #include <set>
 
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
 
 namespace osrm
 {
@@ -98,14 +98,14 @@ std::unordered_set<EdgeID> findSegregatedNodes(const extractor::NodeBasedGraphFa
     };
 
     // Lambda to check if the turn set includes a right turn type
-    const auto has_turn_right = [](std::set<guidance::DirectionModifier::Enum> &turn_types) {
-        return turn_types.find(guidance::DirectionModifier::Right) != turn_types.end() ||
-               turn_types.find(guidance::DirectionModifier::SharpRight) != turn_types.end();
+    const auto has_turn_right = [](std::set<util::guidance::DirectionModifier::Enum> &turn_types) {
+        return turn_types.find(util::guidance::DirectionModifier::Right) != turn_types.end() ||
+               turn_types.find(util::guidance::DirectionModifier::SharpRight) != turn_types.end();
     };
     // Lambda to check if the turn set includes a left turn type
-    const auto has_turn_left = [](std::set<guidance::DirectionModifier::Enum> &turn_types) {
-        return turn_types.find(guidance::DirectionModifier::Left) != turn_types.end() ||
-               turn_types.find(guidance::DirectionModifier::SharpLeft) != turn_types.end();
+    const auto has_turn_left = [](std::set<util::guidance::DirectionModifier::Enum> &turn_types) {
+        return turn_types.find(util::guidance::DirectionModifier::Left) != turn_types.end() ||
+               turn_types.find(util::guidance::DirectionModifier::SharpLeft) != turn_types.end();
     };
 
     auto isSegregated = [&](NodeID node1,
@@ -125,7 +125,7 @@ std::unordered_set<EdgeID> findSegregatedNodes(const extractor::NodeBasedGraphFa
         // Iterate through inbound edges and get turn degrees from driveable inbound
         // edges onto the candidate edge.
         bool oneway_inbound = false;
-        std::set<guidance::DirectionModifier::Enum> incoming_turn_type;
+        std::set<util::guidance::DirectionModifier::Enum> incoming_turn_type;
         for (auto const &edge_from : v1)
         {
             // Get the inbound edge and edge data
@@ -134,7 +134,7 @@ std::unordered_set<EdgeID> findSegregatedNodes(const extractor::NodeBasedGraphFa
             if (!edge_inbound_data.reversed)
             {
                 // Store the turn type of incoming driveable edges.
-                incoming_turn_type.insert(guidance::getTurnDirection(
+                incoming_turn_type.insert(util::guidance::getTurnDirection(
                     get_angle(edge_from.node, edge_inbound, current.edge)));
 
                 // Skip any inbound edges not oneway (i.e. skip bidirectional)
@@ -168,14 +168,14 @@ std::unordered_set<EdgeID> findSegregatedNodes(const extractor::NodeBasedGraphFa
         // Iterate through outbound edges and get turn degrees from the candidate
         // edge onto outbound driveable edges.
         bool oneway_outbound = false;
-        std::set<guidance::DirectionModifier::Enum> outgoing_turn_type;
+        std::set<util::guidance::DirectionModifier::Enum> outgoing_turn_type;
         for (auto const &edge_to : v2)
         {
             if (!edge_to.reversed)
             {
                 // Store outgoing turn type for any driveable edges
                 outgoing_turn_type.insert(
-                    guidance::getTurnDirection(get_angle(node1, current.edge, edge_to.edge)));
+                    util::guidance::getTurnDirection(get_angle(node1, current.edge, edge_to.edge)));
 
                 // Skip any outbound edges not oneway (i.e. skip bidirectional)
                 // and link edge

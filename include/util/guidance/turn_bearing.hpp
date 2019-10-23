@@ -1,11 +1,13 @@
-#ifndef OSRM_INCLUDE_GUIDANCE_TURN_BEARING_HPP_
-#define OSRM_INCLUDE_GUIDANCE_TURN_BEARING_HPP_
+#ifndef OSRM_INCLUDE_UTIL_GUIDANCE_TURN_BEARING_HPP_
+#define OSRM_INCLUDE_UTIL_GUIDANCE_TURN_BEARING_HPP_
 
 #include <cstdint>
 
 #include <boost/assert.hpp>
 
 namespace osrm
+{
+namespace util
 {
 namespace guidance
 {
@@ -33,6 +35,7 @@ class TurnBearing
 #pragma pack(pop)
 
 } // namespace guidance
+} // namespace util
 } // namespace osrm
 
-#endif /* OSRM_INCLUDE_GUIDANCE_TURN_BEARING_HPP_ */
+#endif /* OSRM_INCLUDE_UTIL_GUIDANCE_TURN_BEARING_HPP_ */

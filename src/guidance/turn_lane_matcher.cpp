@@ -17,7 +17,7 @@ namespace lanes
 namespace TurnLaneType = extractor::TurnLaneType;
 
 // Translate Turn Tags into a Matching Direction Modifier
-DirectionModifier::Enum getMatchingModifier(const TurnLaneType::Mask tag)
+util::guidance::DirectionModifier::Enum getMatchingModifier(const TurnLaneType::Mask tag)
 {
     const constexpr TurnLaneType::Mask tag_by_modifier[] = {TurnLaneType::uturn,
                                                             TurnLaneType::sharp_right,
@@ -34,33 +34,33 @@ DirectionModifier::Enum getMatchingModifier(const TurnLaneType::Mask tag)
 
     BOOST_ASSERT(index <= 10);
 
-    const constexpr DirectionModifier::Enum modifiers[11] = {
-        DirectionModifier::UTurn,
-        DirectionModifier::SharpRight,
-        DirectionModifier::Right,
-        DirectionModifier::SlightRight,
-        DirectionModifier::Straight,
-        DirectionModifier::SlightLeft,
-        DirectionModifier::Left,
-        DirectionModifier::SharpLeft,
-        DirectionModifier::Straight,
-        DirectionModifier::Straight,
-        DirectionModifier::UTurn}; // fallback for invalid tags
+    const constexpr util::guidance::DirectionModifier::Enum modifiers[11] = {
+        util::guidance::DirectionModifier::UTurn,
+        util::guidance::DirectionModifier::SharpRight,
+        util::guidance::DirectionModifier::Right,
+        util::guidance::DirectionModifier::SlightRight,
+        util::guidance::DirectionModifier::Straight,
+        util::guidance::DirectionModifier::SlightLeft,
+        util::guidance::DirectionModifier::Left,
+        util::guidance::DirectionModifier::SharpLeft,
+        util::guidance::DirectionModifier::Straight,
+        util::guidance::DirectionModifier::Straight,
+        util::guidance::DirectionModifier::UTurn}; // fallback for invalid tags
 
     return modifiers[index];
 }
 
 // check whether a match of a given tag and a turn instruction can be seen as valid
-bool isValidMatch(const TurnLaneType::Mask tag, const TurnInstruction instruction)
+bool isValidMatch(const TurnLaneType::Mask tag, const util::guidance::TurnInstruction instruction)
 {
-    const auto isMirroredModifier = [](const TurnInstruction instruction) {
-        return instruction.type == TurnType::Merge;
+    const auto isMirroredModifier = [](const util::guidance::TurnInstruction instruction) {
+        return instruction.type == util::guidance::TurnType::Merge;
     };
 
     if (tag == TurnLaneType::uturn)
     {
         return hasLeftModifier(instruction) ||
-               instruction.direction_modifier == DirectionModifier::UTurn;
+               instruction.direction_modifier == util::guidance::DirectionModifier::UTurn;
     }
     else if (tag == TurnLaneType::sharp_right || tag == TurnLaneType::right ||
              tag == TurnLaneType::slight_right)
@@ -73,17 +73,17 @@ bool isValidMatch(const TurnLaneType::Mask tag, const TurnInstruction instructio
     }
     else if (tag == TurnLaneType::straight)
     {
-        return instruction.direction_modifier == DirectionModifier::Straight ||
-               instruction.type == TurnType::Suppressed || instruction.type == TurnType::NewName ||
-               instruction.type == TurnType::StayOnRoundabout || entersRoundabout(instruction) ||
+        return instruction.direction_modifier == util::guidance::DirectionModifier::Straight ||
+               instruction.type == util::guidance::TurnType::Suppressed || instruction.type == util::guidance::TurnType::NewName ||
+               instruction.type == util::guidance::TurnType::StayOnRoundabout || entersRoundabout(instruction) ||
                (instruction.type ==
-                    TurnType::Fork && // Forks can be experienced, even for straight segments
-                (instruction.direction_modifier == DirectionModifier::SlightLeft ||
-                 instruction.direction_modifier == DirectionModifier::SlightRight)) ||
+                    util::guidance::TurnType::Fork && // Forks can be experienced, even for straight segments
+                (instruction.direction_modifier == util::guidance::DirectionModifier::SlightLeft ||
+                 instruction.direction_modifier == util::guidance::DirectionModifier::SlightRight)) ||
                (instruction.type ==
-                    TurnType::Continue && // Forks can be experienced, even for straight segments
-                (instruction.direction_modifier == DirectionModifier::SlightLeft ||
-                 instruction.direction_modifier == DirectionModifier::SlightRight));
+                    util::guidance::TurnType::Continue && // Forks can be experienced, even for straight segments
+                (instruction.direction_modifier == util::guidance::DirectionModifier::SlightLeft ||
+                 instruction.direction_modifier == util::guidance::DirectionModifier::SlightRight));
     }
     else if (tag == TurnLaneType::slight_left || tag == TurnLaneType::left ||
              tag == TurnLaneType::sharp_left)
@@ -93,7 +93,7 @@ bool isValidMatch(const TurnLaneType::Mask tag, const TurnInstruction instructio
         else
         {
             // Needs to be fixed for left side driving
-            return (instruction.type == TurnType::StayOnRoundabout) || hasLeftModifier(instruction);
+            return (instruction.type == util::guidance::TurnType::StayOnRoundabout) || hasLeftModifier(instruction);
         }
     }
     return false;
@@ -217,7 +217,7 @@ Intersection triviallyMatchLanesToTurns(Intersection intersection,
             if (node_based_graph.GetEdgeData(intersection[0].eid).reversed)
             {
                 if (intersection.size() <= 1 || !intersection[1].entry_allowed ||
-                    intersection[1].instruction.direction_modifier != DirectionModifier::SharpRight)
+                    intersection[1].instruction.direction_modifier != util::guidance::DirectionModifier::SharpRight)
                 {
                     // cannot match u-turn in a valid way
                     return intersection;
@@ -225,8 +225,8 @@ Intersection triviallyMatchLanesToTurns(Intersection intersection,
                 u_turn = 1;
                 road_index = 2;
             }
-            intersection[u_turn].instruction.type = TurnType::Continue;
-            intersection[u_turn].instruction.direction_modifier = DirectionModifier::UTurn;
+            intersection[u_turn].instruction.type = util::guidance::TurnType::Continue;
+            intersection[u_turn].instruction.direction_modifier = util::guidance::DirectionModifier::UTurn;
 
             matchRoad(intersection[u_turn], lane_data.back());
             // continue with the first lane
@@ -257,15 +257,15 @@ Intersection triviallyMatchLanesToTurns(Intersection intersection,
         if (node_based_graph.GetEdgeData(intersection[0].eid).reversed)
         {
             if (!intersection.back().entry_allowed ||
-                intersection.back().instruction.direction_modifier != DirectionModifier::SharpLeft)
+                intersection.back().instruction.direction_modifier != util::guidance::DirectionModifier::SharpLeft)
             {
                 // cannot match u-turn in a valid way
                 return intersection;
             }
             u_turn = intersection.size() - 1;
         }
-        intersection[u_turn].instruction.type = TurnType::Continue;
-        intersection[u_turn].instruction.direction_modifier = DirectionModifier::UTurn;
+        intersection[u_turn].instruction.type = util::guidance::TurnType::Continue;
+        intersection[u_turn].instruction.direction_modifier = util::guidance::DirectionModifier::UTurn;
 
         matchRoad(intersection[u_turn], lane_data.back());
     }

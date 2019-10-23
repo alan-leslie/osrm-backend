@@ -2,7 +2,7 @@
 #define ENGINE_GUIDANCE_ASSEMBLE_GEOMETRY_HPP
 
 #include "extractor/travel_mode.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/datafacade/datafacade_base.hpp"
 #include "engine/guidance/leg_geometry.hpp"
 #include "engine/guidance/route_step.hpp"
@@ -71,7 +71,7 @@ inline LegGeometry assembleGeometry(const datafacade::BaseDataFacade &facade,
         cumulative_distance += current_distance;
 
         // all changes to this check have to be matched with assemble_steps
-        if (path_point.turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+        if (path_point.turn_instruction.type != osrm::util::guidance::TurnType::NoTurn)
         {
             geometry.segment_distances.push_back(cumulative_distance);
             geometry.segment_offsets.push_back(geometry.locations.size());
@@ -83,7 +83,7 @@ inline LegGeometry assembleGeometry(const datafacade::BaseDataFacade &facade,
         const auto osm_node_id = facade.GetOSMNodeIDOfNode(path_point.turn_via_node);
 
         if (osm_node_id != geometry.osm_node_ids.back() ||
-            path_point.turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+            path_point.turn_instruction.type != osrm::util::guidance::TurnType::NoTurn)
         {
             geometry.annotations.emplace_back(LegGeometry::Annotation{
                 current_distance,

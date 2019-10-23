@@ -1,7 +1,7 @@
 #ifndef MANUEVER_OVERRIDE_HPP
 #define MANUEVER_OVERRIDE_HPP
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "util/typedefs.hpp"
 
 #include "storage/shared_memory_ownership.hpp"
@@ -30,8 +30,8 @@ struct ManeuverOverride
     std::vector<NodeID> node_sequence;
     // before the turn, then later, the edge_based_node_id of the turn
     NodeID instruction_node; // node-based node ID
-    guidance::TurnType::Enum override_type;
-    guidance::DirectionModifier::Enum direction;
+    util::guidance::TurnType::Enum override_type;
+    util::guidance::DirectionModifier::Enum direction;
 };
 
 // Object returned by the datafacade
@@ -42,8 +42,8 @@ struct StorageManeuverOverride
     NodeID start_node;
     // before the turn, then later, the edge_based_node_id of the turn
     NodeID instruction_node; // node-based node ID
-    guidance::TurnType::Enum override_type;
-    guidance::DirectionModifier::Enum direction;
+    util::guidance::TurnType::Enum override_type;
+    util::guidance::DirectionModifier::Enum direction;
 };
 
 struct NodeBasedTurn
@@ -65,8 +65,8 @@ struct UnresolvedManeuverOverride
         turn_sequence; // initially the internal node-based-node ID of the node
     // before the turn, then later, the edge_based_node_id of the turn
     NodeID instruction_node; // node-based node ID
-    guidance::TurnType::Enum override_type;
-    guidance::DirectionModifier::Enum direction;
+    util::guidance::TurnType::Enum override_type;
+    util::guidance::DirectionModifier::Enum direction;
 
     // check if all parts of the restriction reference an actual node
     bool Valid() const
@@ -78,8 +78,8 @@ struct UnresolvedManeuverOverride
                                                                  n.via == SPECIAL_NODEID ||
                                                                  n.to == SPECIAL_NODEID;
                                                       }) &&
-               (direction != guidance::DirectionModifier::MaxDirectionModifier ||
-                override_type != guidance::TurnType::Invalid);
+               (direction != util::guidance::DirectionModifier::MaxDirectionModifier ||
+                override_type != util::guidance::TurnType::Invalid);
     }
 };
 }

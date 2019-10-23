@@ -3,7 +3,7 @@
 
 #include "extractor/travel_mode.hpp"
 #include "extractor/turn_lane_types.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/datafacade/datafacade_base.hpp"
 #include "engine/guidance/leg_geometry.hpp"
 #include "engine/guidance/route_step.hpp"
@@ -83,7 +83,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
     StepManeuver maneuver{source_node.location,
                           bearings.first,
                           bearings.second,
-                          osrm::guidance::TurnInstruction::NO_TURN(),
+                          osrm::util::guidance::TurnInstruction::NO_TURN(),
                           WaypointType::Depart,
                           0};
 
@@ -115,7 +115,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
             segment_weight += path_point.weight_until_turn;
 
             // all changes to this check have to be matched with assemble_geometry
-            if (path_point.turn_instruction.type != osrm::guidance::TurnType::NoTurn)
+            if (path_point.turn_instruction.type != osrm::util::guidance::TurnType::NoTurn)
             {
                 BOOST_ASSERT(segment_weight >= 0);
                 const auto name = facade.GetNameForID(step_name_id);
@@ -293,7 +293,7 @@ inline std::vector<RouteStep> assembleSteps(const datafacade::BaseDataFacade &fa
     maneuver = {intersection.location,
                 bearings.first,
                 bearings.second,
-                osrm::guidance::TurnInstruction::NO_TURN(),
+                osrm::util::guidance::TurnInstruction::NO_TURN(),
                 WaypointType::Arrive,
                 0};
 

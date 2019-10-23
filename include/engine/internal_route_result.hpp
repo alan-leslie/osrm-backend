@@ -4,8 +4,8 @@
 #include "extractor/class_data.hpp"
 #include "extractor/travel_mode.hpp"
 
-#include "guidance/turn_bearing.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_bearing.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "engine/phantom_node.hpp"
 
@@ -45,7 +45,7 @@ struct PathData
     // will contain the duration of the turn.  Otherwise it will be 0.
     EdgeWeight duration_of_turn;
     // instruction to execute at the turn
-    osrm::guidance::TurnInstruction turn_instruction;
+    osrm::util::guidance::TurnInstruction turn_instruction;
     // turn lane data
     util::guidance::LaneTupleIdPair lane_data;
     // travel mode of the street that leads to the turn
@@ -59,9 +59,9 @@ struct PathData
     DatasourceID datasource_id;
 
     // bearing (as seen from the intersection) pre-turn
-    osrm::guidance::TurnBearing pre_turn_bearing;
+    osrm::util::guidance::TurnBearing pre_turn_bearing;
     // bearing (as seen from the intersection) post-turn
-    osrm::guidance::TurnBearing post_turn_bearing;
+    osrm::util::guidance::TurnBearing post_turn_bearing;
 
     // Driving side of the turn
     bool is_left_hand_driving;

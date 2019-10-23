@@ -1,5 +1,5 @@
 #include "engine/guidance/collapse_scenario_detection.hpp"
-#include "guidance/constants.hpp"
+#include "util/intersection_constants.hpp"
 #include "util/bearing.hpp"
 
 #include <numeric>
@@ -12,7 +12,7 @@ namespace engine
 {
 namespace guidance
 {
-using namespace osrm::guidance;
+using namespace osrm::util::guidance;
 
 namespace
 {
@@ -294,7 +294,7 @@ bool suppressedStraightBetweenTurns(const RouteStepIterator step_entering_inters
     const auto total_angle =
         totalTurnAngle(*step_entering_intersection, *step_leaving_intersection);
     const auto total_angle_is_not_uturn =
-        (total_angle > NARROW_TURN_ANGLE) && (total_angle < 360 - NARROW_TURN_ANGLE);
+        (total_angle > util::intersection::NARROW_TURN_ANGLE) && (total_angle < 360 - util::intersection::NARROW_TURN_ANGLE);
 
     return both_short_enough && similar_length && correct_types && total_angle_is_not_uturn;
 }

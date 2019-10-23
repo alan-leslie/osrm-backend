@@ -8,8 +8,8 @@
 #include "extractor/maneuver_override.hpp"
 #include "extractor/travel_mode.hpp"
 #include "extractor/turn_lane_types.hpp"
-#include "guidance/turn_bearing.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_bearing.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "engine/algorithm.hpp"
 #include "engine/datafacade/algorithm_datafacade.hpp"

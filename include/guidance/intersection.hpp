@@ -2,7 +2,7 @@
 #define OSRM_GUIDANCE_INTERSECTION_HPP_
 
 #include "extractor/intersection/intersection_view.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 namespace osrm
 {
@@ -32,13 +32,13 @@ namespace guidance
 struct ConnectedRoad final : extractor::intersection::IntersectionViewData
 {
     ConnectedRoad(const extractor::intersection::IntersectionViewData &view,
-                  const TurnInstruction instruction,
+                  const util::guidance::TurnInstruction instruction,
                   const LaneDataID lane_data_id)
         : IntersectionViewData(view), instruction(instruction), lane_data_id(lane_data_id)
     {
     }
 
-    TurnInstruction instruction;
+    util::guidance::TurnInstruction instruction;
     LaneDataID lane_data_id;
 
     // used to sort the set of connected roads (we require sorting throughout turn handling)
@@ -47,19 +47,19 @@ struct ConnectedRoad final : extractor::intersection::IntersectionViewData
     // make a left turn into an equivalent right turn and vice versa
     void mirror()
     {
-        const constexpr DirectionModifier::Enum mirrored_modifiers[] = {
-            DirectionModifier::UTurn,
-            DirectionModifier::SharpLeft,
-            DirectionModifier::Left,
-            DirectionModifier::SlightLeft,
-            DirectionModifier::Straight,
-            DirectionModifier::SlightRight,
-            DirectionModifier::Right,
-            DirectionModifier::SharpRight};
+        const constexpr util::guidance::DirectionModifier::Enum mirrored_modifiers[] = {
+            util::guidance::DirectionModifier::UTurn,
+            util::guidance::DirectionModifier::SharpLeft,
+            util::guidance::DirectionModifier::Left,
+            util::guidance::DirectionModifier::SlightLeft,
+            util::guidance::DirectionModifier::Straight,
+            util::guidance::DirectionModifier::SlightRight,
+            util::guidance::DirectionModifier::Right,
+            util::guidance::DirectionModifier::SharpRight};
 
         static_assert(
-            sizeof(mirrored_modifiers) / sizeof(DirectionModifier::Enum) ==
-                DirectionModifier::MaxDirectionModifier,
+            sizeof(mirrored_modifiers) / sizeof(util::guidance::DirectionModifier::Enum) ==
+                util::guidance::DirectionModifier::MaxDirectionModifier,
             "The list of mirrored modifiers needs to match the available modifiers in size.");
 
         if (util::angularDeviation(angle, 0) > std::numeric_limits<double>::epsilon())

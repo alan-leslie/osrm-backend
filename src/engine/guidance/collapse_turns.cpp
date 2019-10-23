@@ -1,6 +1,6 @@
 #include "engine/guidance/collapse_turns.hpp"
-#include "guidance/constants.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/intersection_constants.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/guidance/collapse_scenario_detection.hpp"
 #include "engine/guidance/collapsing_utility.hpp"
 #include "util/bearing.hpp"
@@ -10,6 +10,7 @@
 
 #include <boost/assert.hpp>
 
+
 namespace osrm
 {
 namespace engine
@@ -17,7 +18,7 @@ namespace engine
 namespace guidance
 {
 using osrm::util::angularDeviation;
-using namespace osrm::guidance;
+using namespace osrm::util::guidance;
 
 namespace
 {
@@ -65,7 +66,7 @@ double findTotalTurnAngle(const RouteStep &entry_step, const RouteStep &exit_ste
     //        d
     const auto use_total_angle = [&]() {
         // only consider actual turns in combination:
-        if (angularDeviation(total_angle, 180) < 0.5 * NARROW_TURN_ANGLE)
+        if (angularDeviation(total_angle, 180) < 0.5 * util::intersection::NARROW_TURN_ANGLE)
             return false;
 
         // entry step is short and the exit and the exit step does not have intersections??
@@ -367,7 +368,7 @@ void SegregatedTurnStrategy::operator()(RouteStep &step_at_turn_location,
                                 : TurnType::NewName));
 
         // Set modifier to straight
-        setModifier(step_at_turn_location, osrm::guidance::DirectionModifier::Straight);
+        setModifier(step_at_turn_location, osrm::util::guidance::DirectionModifier::Straight);
 
         // Do not update modifier based on turn direction
         update_modifier_for_turn_direction = false;

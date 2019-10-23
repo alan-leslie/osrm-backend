@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <utility>
 
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
 
 namespace osrm
 {
@@ -111,7 +111,7 @@ Intersection TurnAnalysis::AssignTurnTypes(
                    std::back_inserter(intersection),
                    [&](const extractor::intersection::IntersectionViewData &data) {
                        return ConnectedRoad(data,
-                                            {TurnType::Invalid, DirectionModifier::UTurn},
+                                            {util::guidance::TurnType::Invalid, util::guidance::DirectionModifier::UTurn},
                                             INVALID_LANE_DATAID);
                    });
 
@@ -166,8 +166,8 @@ Intersection TurnAnalysis::AssignTurnTypes(
     if (node_based_graph.GetEdgeData(entering_via_edge).flags.road_classification.IsMotorwayClass())
     {
         std::for_each(intersection.begin(), intersection.end(), [](ConnectedRoad &road) {
-            if (road.instruction.type == TurnType::OnRamp)
-                road.instruction.type = TurnType::OffRamp;
+            if (road.instruction.type == util::guidance::TurnType::OnRamp)
+                road.instruction.type = util::guidance::TurnType::OffRamp;
         });
     }
 
@@ -194,9 +194,9 @@ Intersection TurnAnalysis::setTurnTypes(const NodeID node_prior_to_intersection,
         const NodeID to_nid = node_based_graph.GetTarget(onto_edge);
 
         if (node_prior_to_intersection == to_nid)
-            road.instruction = {TurnType::Continue, DirectionModifier::UTurn};
+            road.instruction = {util::guidance::TurnType::Continue, util::guidance::DirectionModifier::UTurn};
         else
-            road.instruction = {TurnType::Turn, getTurnDirection(road.angle)};
+            road.instruction = {util::guidance::TurnType::Turn, getTurnDirection(road.angle)};
     }
     return intersection;
 }

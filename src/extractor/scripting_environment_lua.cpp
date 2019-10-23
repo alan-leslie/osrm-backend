@@ -13,7 +13,7 @@
 #include "extractor/raster_source.hpp"
 #include "extractor/restriction_parser.hpp"
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "util/coordinate.hpp"
 #include "util/exception.hpp"
@@ -599,16 +599,16 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
             sol::property([](const ExtractionTurn &turn) {
                 if (turn.number_of_roads > 2 || turn.source_mode != turn.target_mode ||
                     turn.is_u_turn)
-                    return osrm::guidance::TurnType::Turn;
+                    return osrm::util::guidance::TurnType::Turn;
                 else
-                    return osrm::guidance::TurnType::NoTurn;
+                    return osrm::util::guidance::TurnType::NoTurn;
             }),
             "direction_modifier",
             sol::property([](const ExtractionTurn &turn) {
                 if (turn.is_u_turn)
-                    return osrm::guidance::DirectionModifier::UTurn;
+                    return osrm::util::guidance::DirectionModifier::UTurn;
                 else
-                    return osrm::guidance::DirectionModifier::Straight;
+                    return osrm::util::guidance::DirectionModifier::Straight;
             }),
             "has_traffic_light",
             &ExtractionTurn::has_traffic_light,
@@ -625,77 +625,77 @@ void Sol2ScriptingEnvironment::InitContext(LuaScriptingContext &context)
 
         context.state.new_enum("turn_type",
                                "invalid",
-                               osrm::guidance::TurnType::Invalid,
+                               osrm::util::guidance::TurnType::Invalid,
                                "new_name",
-                               osrm::guidance::TurnType::NewName,
+                               osrm::util::guidance::TurnType::NewName,
                                "continue",
-                               osrm::guidance::TurnType::Continue,
+                               osrm::util::guidance::TurnType::Continue,
                                "turn",
-                               osrm::guidance::TurnType::Turn,
+                               osrm::util::guidance::TurnType::Turn,
                                "merge",
-                               osrm::guidance::TurnType::Merge,
+                               osrm::util::guidance::TurnType::Merge,
                                "on_ramp",
-                               osrm::guidance::TurnType::OnRamp,
+                               osrm::util::guidance::TurnType::OnRamp,
                                "off_ramp",
-                               osrm::guidance::TurnType::OffRamp,
+                               osrm::util::guidance::TurnType::OffRamp,
                                "fork",
-                               osrm::guidance::TurnType::Fork,
+                               osrm::util::guidance::TurnType::Fork,
                                "end_of_road",
-                               osrm::guidance::TurnType::EndOfRoad,
+                               osrm::util::guidance::TurnType::EndOfRoad,
                                "notification",
-                               osrm::guidance::TurnType::Notification,
+                               osrm::util::guidance::TurnType::Notification,
                                "enter_roundabout",
-                               osrm::guidance::TurnType::EnterRoundabout,
+                               osrm::util::guidance::TurnType::EnterRoundabout,
                                "enter_and_exit_roundabout",
-                               osrm::guidance::TurnType::EnterAndExitRoundabout,
+                               osrm::util::guidance::TurnType::EnterAndExitRoundabout,
                                "enter_rotary",
-                               osrm::guidance::TurnType::EnterRotary,
+                               osrm::util::guidance::TurnType::EnterRotary,
                                "enter_and_exit_rotary",
-                               osrm::guidance::TurnType::EnterAndExitRotary,
+                               osrm::util::guidance::TurnType::EnterAndExitRotary,
                                "enter_roundabout_intersection",
-                               osrm::guidance::TurnType::EnterRoundaboutIntersection,
+                               osrm::util::guidance::TurnType::EnterRoundaboutIntersection,
                                "enter_and_exit_roundabout_intersection",
-                               osrm::guidance::TurnType::EnterAndExitRoundaboutIntersection,
+                               osrm::util::guidance::TurnType::EnterAndExitRoundaboutIntersection,
                                "use_lane",
-                               osrm::guidance::TurnType::Suppressed,
+                               osrm::util::guidance::TurnType::Suppressed,
                                "no_turn",
-                               osrm::guidance::TurnType::NoTurn,
+                               osrm::util::guidance::TurnType::NoTurn,
                                "suppressed",
-                               osrm::guidance::TurnType::Suppressed,
+                               osrm::util::guidance::TurnType::Suppressed,
                                "enter_roundabout_at_exit",
-                               osrm::guidance::TurnType::EnterRoundaboutAtExit,
+                               osrm::util::guidance::TurnType::EnterRoundaboutAtExit,
                                "exit_roundabout",
-                               osrm::guidance::TurnType::ExitRoundabout,
+                               osrm::util::guidance::TurnType::ExitRoundabout,
                                "enter_rotary_at_exit",
-                               osrm::guidance::TurnType::EnterRotaryAtExit,
+                               osrm::util::guidance::TurnType::EnterRotaryAtExit,
                                "exit_rotary",
-                               osrm::guidance::TurnType::ExitRotary,
+                               osrm::util::guidance::TurnType::ExitRotary,
                                "enter_roundabout_intersection_at_exit",
-                               osrm::guidance::TurnType::EnterRoundaboutIntersectionAtExit,
+                               osrm::util::guidance::TurnType::EnterRoundaboutIntersectionAtExit,
                                "exit_roundabout_intersection",
-                               osrm::guidance::TurnType::ExitRoundaboutIntersection,
+                               osrm::util::guidance::TurnType::ExitRoundaboutIntersection,
                                "stay_on_roundabout",
-                               osrm::guidance::TurnType::StayOnRoundabout,
+                               osrm::util::guidance::TurnType::StayOnRoundabout,
                                "sliproad",
-                               osrm::guidance::TurnType::Sliproad);
+                               osrm::util::guidance::TurnType::Sliproad);
 
         context.state.new_enum("direction_modifier",
                                "u_turn",
-                               osrm::guidance::DirectionModifier::UTurn,
+                               osrm::util::guidance::DirectionModifier::UTurn,
                                "sharp_right",
-                               osrm::guidance::DirectionModifier::SharpRight,
+                               osrm::util::guidance::DirectionModifier::SharpRight,
                                "right",
-                               osrm::guidance::DirectionModifier::Right,
+                               osrm::util::guidance::DirectionModifier::Right,
                                "slight_right",
-                               osrm::guidance::DirectionModifier::SlightRight,
+                               osrm::util::guidance::DirectionModifier::SlightRight,
                                "straight",
-                               osrm::guidance::DirectionModifier::Straight,
+                               osrm::util::guidance::DirectionModifier::Straight,
                                "slight_left",
-                               osrm::guidance::DirectionModifier::SlightLeft,
+                               osrm::util::guidance::DirectionModifier::SlightLeft,
                                "left",
-                               osrm::guidance::DirectionModifier::Left,
+                               osrm::util::guidance::DirectionModifier::Left,
                                "sharp_left",
-                               osrm::guidance::DirectionModifier::SharpLeft);
+                               osrm::util::guidance::DirectionModifier::SharpLeft);
     };
 
     switch (context.api_version)

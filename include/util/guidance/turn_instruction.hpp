@@ -1,14 +1,16 @@
-#ifndef OSRM_GUIDANCE_TURN_INSTRUCTION_HPP_
-#define OSRM_GUIDANCE_TURN_INSTRUCTION_HPP_
+#ifndef OSRM_UTIL_GUIDANCE_TURN_INSTRUCTION_HPP_
+#define OSRM_UTIL_GUIDANCE_TURN_INSTRUCTION_HPP_
 
 #include <algorithm>
 #include <cstdint>
 
-#include "guidance/roundabout_type.hpp"
+#include "util/guidance/roundabout_type.hpp"
 #include "util/attributes.hpp"
 #include "util/typedefs.hpp"
 
 namespace osrm
+{
+namespace util
 {
 namespace guidance
 {
@@ -85,13 +87,13 @@ struct TurnInstruction
 
     static TurnInstruction NO_TURN() { return {TurnType::NoTurn, DirectionModifier::UTurn}; }
 
-    static TurnInstruction REMAIN_ROUNDABOUT(const RoundaboutType,
+    static TurnInstruction REMAIN_ROUNDABOUT(const util::guidance::RoundaboutType,
                                              const DirectionModifier::Enum modifier)
     {
         return {TurnType::StayOnRoundabout, modifier};
     }
 
-    static TurnInstruction ENTER_ROUNDABOUT(const RoundaboutType roundabout_type,
+    static TurnInstruction ENTER_ROUNDABOUT(const util::guidance::RoundaboutType roundabout_type,
                                             const DirectionModifier::Enum modifier)
     {
         const constexpr TurnType::Enum enter_instruction[] = {
@@ -102,7 +104,7 @@ struct TurnInstruction
         return {enter_instruction[static_cast<int>(roundabout_type)], modifier};
     }
 
-    static TurnInstruction EXIT_ROUNDABOUT(const RoundaboutType roundabout_type,
+    static TurnInstruction EXIT_ROUNDABOUT(const util::guidance::RoundaboutType roundabout_type,
                                            const DirectionModifier::Enum modifier)
     {
         const constexpr TurnType::Enum exit_instruction[] = {TurnType::Invalid,
@@ -112,7 +114,7 @@ struct TurnInstruction
         return {exit_instruction[static_cast<int>(roundabout_type)], modifier};
     }
 
-    static TurnInstruction ENTER_AND_EXIT_ROUNDABOUT(const RoundaboutType roundabout_type,
+    static TurnInstruction ENTER_AND_EXIT_ROUNDABOUT(const util::guidance::RoundaboutType roundabout_type,
                                                      const DirectionModifier::Enum modifier)
     {
         const constexpr TurnType::Enum exit_instruction[] = {
@@ -123,7 +125,7 @@ struct TurnInstruction
         return {exit_instruction[static_cast<int>(roundabout_type)], modifier};
     }
 
-    static TurnInstruction ENTER_ROUNDABOUT_AT_EXIT(const RoundaboutType roundabout_type,
+    static TurnInstruction ENTER_ROUNDABOUT_AT_EXIT(const util::guidance::RoundaboutType roundabout_type,
                                                     const DirectionModifier::Enum modifier)
     {
         const constexpr TurnType::Enum enter_instruction[] = {
@@ -394,6 +396,7 @@ inline std::string instructionModifierToString(const DirectionModifier::Enum mod
 }
 
 } // namespace guidance
+} // namespace util
 } // namespace osrm
 
-#endif // OSRM_GUIDANCE_TURN_INSTRUCTION_HPP_
+#endif // OSRM_UTIL_GUIDANCE_TURN_INSTRUCTION_HPP_

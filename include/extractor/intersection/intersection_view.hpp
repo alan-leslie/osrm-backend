@@ -3,7 +3,7 @@
 
 #include "extractor/intersection/intersection_edge.hpp"
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "util/bearing.hpp"
 #include "util/log.hpp"

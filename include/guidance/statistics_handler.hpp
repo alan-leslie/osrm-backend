@@ -3,7 +3,7 @@
 
 #include "guidance/intersection.hpp"
 #include "guidance/intersection_handler.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "util/log.hpp"
 
@@ -60,7 +60,7 @@ class StatisticsHandler final : public IntersectionHandler
         for (const auto &kv : type_hist)
             if (kv.second > 0)
                 util::Log() << "  " << std::fixed << std::setprecision(2)
-                            << internalInstructionTypeToString(kv.first) << ": " << kv.second
+                            << util::guidance::internalInstructionTypeToString(kv.first) << ": " << kv.second
                             << " (" << (kv.second / static_cast<float>(num_types) * 100.) << "%)";
 
         util::Log() << "Assigned " << num_modifiers << " turn instruction modifiers:";
@@ -68,7 +68,7 @@ class StatisticsHandler final : public IntersectionHandler
         for (const auto &kv : modifier_hist)
             if (kv.second > 0)
                 util::Log() << "  " << std::fixed << std::setprecision(2)
-                            << instructionModifierToString(kv.first) << ": " << kv.second << " ("
+                            << util::guidance::instructionModifierToString(kv.first) << ": " << kv.second << " ("
                             << (kv.second / static_cast<float>(num_modifiers) * 100.) << "%)";
     }
 
@@ -103,8 +103,8 @@ class StatisticsHandler final : public IntersectionHandler
 
   private:
     mutable std::mutex lock;
-    mutable std::map<TurnType::Enum, std::uint64_t> type_hist;
-    mutable std::map<DirectionModifier::Enum, std::uint64_t> modifier_hist;
+    mutable std::map<util::guidance::TurnType::Enum, std::uint64_t> type_hist;
+    mutable std::map<util::guidance::DirectionModifier::Enum, std::uint64_t> modifier_hist;
 };
 
 } // namespace guidance

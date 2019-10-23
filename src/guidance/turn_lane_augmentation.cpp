@@ -119,7 +119,7 @@ LaneDataVector augmentMultiple(const std::size_t none_index,
         // check if there is a straight turn
         auto straight_itr =
             std::find_if(intersection_range_first, intersection_range_end, [](const auto &road) {
-                return road.instruction.direction_modifier == DirectionModifier::Straight;
+                return road.instruction.direction_modifier == util::guidance::DirectionModifier::Straight;
             });
 
         // we have a straight turn?
@@ -202,13 +202,13 @@ LaneDataVector handleRenamingSituations(const std::size_t none_index,
             continue;
 
         const auto modifier = road.instruction.direction_modifier;
-        has_right |= modifier == DirectionModifier::Right;
-        has_right |= modifier == DirectionModifier::SlightRight;
-        has_right |= modifier == DirectionModifier::SharpRight;
-        has_through |= modifier == DirectionModifier::Straight;
-        has_left |= modifier == DirectionModifier::Left;
-        has_left |= modifier == DirectionModifier::SlightLeft;
-        has_left |= modifier == DirectionModifier::SharpLeft;
+        has_right |= modifier == util::guidance::DirectionModifier::Right;
+        has_right |= modifier == util::guidance::DirectionModifier::SlightRight;
+        has_right |= modifier == util::guidance::DirectionModifier::SharpRight;
+        has_through |= modifier == util::guidance::DirectionModifier::Straight;
+        has_left |= modifier == util::guidance::DirectionModifier::Left;
+        has_left |= modifier == util::guidance::DirectionModifier::SlightLeft;
+        has_left |= modifier == util::guidance::DirectionModifier::SharpLeft;
     }
 
     // find missing tag and augment neighboring, if possible

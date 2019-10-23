@@ -1,5 +1,5 @@
 #include "extractor/travel_mode.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "engine/api/json_factory.hpp"
 #include "engine/hint.hpp"
@@ -19,8 +19,7 @@
 #include <utility>
 #include <vector>
 
-namespace TurnType = osrm::guidance::TurnType;
-using TurnInstruction = osrm::guidance::TurnInstruction;
+using TurnInstruction = osrm::util::guidance::TurnInstruction;
 
 namespace osrm
 {
@@ -98,7 +97,7 @@ util::json::Object makeStepManeuver(const guidance::StepManeuver &maneuver)
     std::string maneuver_type;
 
     if (maneuver.waypoint_type == guidance::WaypointType::None)
-        maneuver_type = osrm::guidance::instructionTypeToString(maneuver.instruction.type);
+        maneuver_type = osrm::util::guidance::instructionTypeToString(maneuver.instruction.type);
     else
         maneuver_type = detail::waypointTypeToString(maneuver.waypoint_type);
 
@@ -109,7 +108,7 @@ util::json::Object makeStepManeuver(const guidance::StepManeuver &maneuver)
 
     if (detail::isValidModifier(maneuver))
         step_maneuver.values["modifier"] =
-            osrm::guidance::instructionModifierToString(maneuver.instruction.direction_modifier);
+            osrm::util::guidance::instructionModifierToString(maneuver.instruction.direction_modifier);
 
     step_maneuver.values["location"] = detail::coordinateToLonLat(maneuver.location);
     step_maneuver.values["bearing_before"] = detail::roundAndClampBearing(maneuver.bearing_before);

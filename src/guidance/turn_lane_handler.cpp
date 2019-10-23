@@ -232,7 +232,7 @@ TurnLaneScenario TurnLaneHandler::deduceScenario(const NodeID at,
             const auto &road = previous_intersection[road_index];
             // in case of a sliproad that is connected to road of simlar angle, we handle the
             // turn as a combined turn
-            if (road.instruction.type == TurnType::Sliproad)
+            if (road.instruction.type == util::guidance::TurnType::Sliproad)
             {
                 if (via_edge == road.eid)
                     return TurnLaneScenario::SLIPROAD;
@@ -718,7 +718,7 @@ Intersection TurnLaneHandler::handleSliproadTurn(Intersection intersection,
                       std::find_if(previous_intersection.begin(),
                                    previous_intersection.end(),
                                    [](const ConnectedRoad &road) {
-                                       return road.instruction.type == TurnType::Sliproad;
+                                       return road.instruction.type == util::guidance::TurnType::Sliproad;
                                    }));
 
     BOOST_ASSERT(sliproad_index <= previous_intersection.size());

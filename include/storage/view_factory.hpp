@@ -19,9 +19,9 @@
 #include "extractor/query_node.hpp"
 #include "extractor/travel_mode.hpp"
 
-#include "guidance/turn_bearing.hpp"
+#include "util/guidance/turn_bearing.hpp"
 #include "guidance/turn_data_container.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "partitioner/cell_storage.hpp"
 #include "partitioner/edge_based_graph_reader.hpp"
@@ -109,15 +109,15 @@ inline auto make_turn_data_view(const SharedDataIndex &index, const std::string 
     auto lane_data_ids = make_vector_view<LaneDataID>(index, name + "/lane_data_ids");
 
     const auto turn_instructions =
-        make_vector_view<guidance::TurnInstruction>(index, name + "/turn_instructions");
+        make_vector_view<util::guidance::TurnInstruction>(index, name + "/turn_instructions");
 
     const auto entry_class_ids = make_vector_view<EntryClassID>(index, name + "/entry_class_ids");
 
     const auto pre_turn_bearings =
-        make_vector_view<guidance::TurnBearing>(index, name + "/pre_turn_bearings");
+        make_vector_view<util::guidance::TurnBearing>(index, name + "/pre_turn_bearings");
 
     const auto post_turn_bearings =
-        make_vector_view<guidance::TurnBearing>(index, name + "/post_turn_bearings");
+        make_vector_view<util::guidance::TurnBearing>(index, name + "/post_turn_bearings");
 
     return guidance::TurnDataView(std::move(turn_instructions),
                                   std::move(lane_data_ids),

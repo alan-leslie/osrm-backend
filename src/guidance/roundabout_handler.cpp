@@ -15,7 +15,7 @@
 
 #include <boost/assert.hpp>
 
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
 
 namespace osrm
 {
@@ -54,7 +54,7 @@ bool RoundaboutHandler::canProcess(const NodeID from_nid,
         return false;
 
     const auto roundabout_type = getRoundaboutType(node_based_graph.GetTarget(via_eid));
-    return roundabout_type != RoundaboutType::None;
+    return roundabout_type != util::guidance::RoundaboutType::None;
 }
 
 Intersection RoundaboutHandler::
@@ -205,7 +205,7 @@ bool RoundaboutHandler::qualifiesAsRoundaboutIntersection(
     return well_distinct_bearings;
 }
 
-RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
+util::guidance::RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
 {
     std::unordered_set<unsigned> roundabout_name_ids;
     std::unordered_set<unsigned> connected_names;
@@ -295,7 +295,7 @@ RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
     }
 
     if (roundabout == circular)
-        return RoundaboutType::None;
+        return util::guidance::RoundaboutType::None;
 
     while (0 == roundabout_nodes.count(last_node))
     {
@@ -305,13 +305,13 @@ RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
 
         // detect invalid/complex roundabout taggings
         if (countRoundaboutFlags(last_node) != 2)
-            return RoundaboutType::None;
+            return util::guidance::RoundaboutType::None;
 
         const auto eid = getNextOnRoundabout(last_node, roundabout, circular);
 
         if (eid == SPECIAL_EDGEID)
         {
-            return RoundaboutType::None;
+            return util::guidance::RoundaboutType::None;
         }
 
         roundabout_length += getEdgeLength(last_node, eid);
@@ -324,12 +324,12 @@ RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
 
     // a roundabout that cannot be entered or exited should not get here
     if (roundabout_nodes.size() == 0)
-        return RoundaboutType::None;
+        return util::guidance::RoundaboutType::None;
 
     // More a traffic loop than anything else, currently treated as roundabout turn
     if (roundabout_nodes.size() == 1 && roundabout)
     {
-        return RoundaboutType::RoundaboutIntersection;
+        return util::guidance::RoundaboutType::RoundaboutIntersection;
     }
 
     const double radius = roundabout_length / (2 * M_PI);
@@ -345,24 +345,24 @@ RoundaboutType RoundaboutHandler::getRoundaboutType(const NodeID nid) const
                              (radius > MAX_ROUNDABOUT_RADIUS)));
 
     if (is_rotary)
-        return RoundaboutType::Rotary;
+        return util::guidance::RoundaboutType::Rotary;
 
     // circular intersections need to be rotaries
     if (circular)
-        return RoundaboutType::None;
+        return util::guidance::RoundaboutType::None;
 
     // Looks like an intersection: four ways and turn angles are easy to distinguish
     const auto is_roundabout_intersection = qualifiesAsRoundaboutIntersection(roundabout_nodes) &&
                                             radius < MAX_ROUNDABOUT_INTERSECTION_RADIUS;
 
     if (is_roundabout_intersection)
-        return RoundaboutType::RoundaboutIntersection;
+        return util::guidance::RoundaboutType::RoundaboutIntersection;
 
     // Not a special case, just a normal roundabout
-    return RoundaboutType::Roundabout;
+    return util::guidance::RoundaboutType::Roundabout;
 }
 
-Intersection RoundaboutHandler::handleRoundabouts(const RoundaboutType roundabout_type,
+Intersection RoundaboutHandler::handleRoundabouts(const util::guidance::RoundaboutType roundabout_type,
                                                   const EdgeID via_eid,
                                                   const bool on_roundabout,
                                                   const bool can_exit_roundabout_separately,
@@ -394,11 +394,11 @@ Intersection RoundaboutHandler::handleRoundabouts(const RoundaboutType roundabou
                 {
                     // No turn possible.
                     if (intersection.size() == 2)
-                        turn.instruction = TurnInstruction::NO_TURN();
+                        turn.instruction = util::guidance::TurnInstruction::NO_TURN();
                     else
                     {
                         turn.instruction.type =
-                            TurnType::Suppressed; // make sure to report intersection
+                            util::guidance::TurnType::Suppressed; // make sure to report intersection
                         turn.instruction.direction_modifier = getTurnDirection(turn.angle);
                     }
                 }
@@ -423,19 +423,19 @@ Intersection RoundaboutHandler::handleRoundabouts(const RoundaboutType roundabou
                     if (out_data.road_classification.IsLowPriorityRoadClass() ||
                         has_non_ignorable_exit())
                     {
-                        turn.instruction = TurnInstruction::REMAIN_ROUNDABOUT(
+                        turn.instruction = util::guidance::TurnInstruction::REMAIN_ROUNDABOUT(
                             roundabout_type, getTurnDirection(turn.angle));
                     }
                     else
                     { // Suppress exit instructions from normal roundabouts to service roads
-                        turn.instruction = {TurnType::Suppressed, getTurnDirection(turn.angle)};
+                        turn.instruction = {util::guidance::TurnType::Suppressed, getTurnDirection(turn.angle)};
                     }
                 }
             }
             else
             {
                 turn.instruction =
-                    TurnInstruction::EXIT_ROUNDABOUT(roundabout_type, getTurnDirection(turn.angle));
+                    util::guidance::TurnInstruction::EXIT_ROUNDABOUT(roundabout_type, getTurnDirection(turn.angle));
             }
         }
         return intersection;
@@ -462,10 +462,10 @@ Intersection RoundaboutHandler::handleRoundabouts(const RoundaboutType roundabou
             if (out_data.roundabout || out_data.circular)
             {
                 if (can_exit_roundabout_separately)
-                    turn.instruction = TurnInstruction::ENTER_ROUNDABOUT_AT_EXIT(
+                    turn.instruction = util::guidance::TurnInstruction::ENTER_ROUNDABOUT_AT_EXIT(
                         roundabout_type, getTurnDirection(turn.angle));
                 else
-                    turn.instruction = TurnInstruction::ENTER_ROUNDABOUT(
+                    turn.instruction = util::guidance::TurnInstruction::ENTER_ROUNDABOUT(
                         roundabout_type, getTurnDirection(turn.angle));
             }
             else
@@ -490,7 +490,7 @@ Intersection RoundaboutHandler::handleRoundabouts(const RoundaboutType roundabou
                 }
                 else
                 {
-                    turn.instruction = TurnInstruction::ENTER_AND_EXIT_ROUNDABOUT(
+                    turn.instruction = util::guidance::TurnInstruction::ENTER_AND_EXIT_ROUNDABOUT(
                         roundabout_type, getTurnDirection(turn.angle));
                 }
             }

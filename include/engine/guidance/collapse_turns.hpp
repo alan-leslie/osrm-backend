@@ -83,10 +83,10 @@ struct AdjustToCombinedTurnStrategy : CombineStrategy
 // Set a fixed instruction type
 struct SetFixedInstructionStrategy : CombineStrategy
 {
-    SetFixedInstructionStrategy(const osrm::guidance::TurnInstruction instruction);
+    SetFixedInstructionStrategy(const osrm::util::guidance::TurnInstruction instruction);
     void operator()(RouteStep &step_at_turn_location, const RouteStep &transfer_from_step) const;
 
-    const osrm::guidance::TurnInstruction instruction;
+    const osrm::util::guidance::TurnInstruction instruction;
 };
 
 // Handling of staggered intersections

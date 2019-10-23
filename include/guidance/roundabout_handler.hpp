@@ -9,7 +9,7 @@
 #include "guidance/intersection.hpp"
 #include "guidance/intersection_handler.hpp"
 #include "guidance/is_through_street.hpp"
-#include "guidance/roundabout_type.hpp"
+#include "util/guidance/roundabout_type.hpp"
 
 #include "util/node_based_graph.hpp"
 #include "util/typedefs.hpp"
@@ -66,13 +66,13 @@ class RoundaboutHandler : public IntersectionHandler
                                                const Intersection &intersection) const;
 
     // decide whether we lookk at a roundabout or a rotary
-    RoundaboutType getRoundaboutType(const NodeID nid) const;
+    util::guidance::RoundaboutType getRoundaboutType(const NodeID nid) const;
 
     // TODO handle bike/walk cases that allow crossing a roundabout!
     // Processing of roundabouts
     // Produces instructions to enter/exit a roundabout or to stay on it.
     // Performs the distinction between roundabout and rotaries.
-    Intersection handleRoundabouts(const RoundaboutType roundabout_type,
+    Intersection handleRoundabouts(const util::guidance::RoundaboutType roundabout_type,
                                    const EdgeID via_edge,
                                    const bool on_roundabout,
                                    const bool can_exit_roundabout,

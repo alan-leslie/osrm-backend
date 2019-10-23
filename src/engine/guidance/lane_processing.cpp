@@ -1,7 +1,7 @@
 #include "util/for_each_pair.hpp"
 #include "util/group_by.hpp"
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/guidance/collapsing_utility.hpp"
 
 #include <algorithm>
@@ -15,7 +15,7 @@ namespace engine
 {
 namespace guidance
 {
-using namespace osrm::guidance;
+using namespace osrm::util::guidance;
 
 std::vector<RouteStep> anticipateLaneChange(std::vector<RouteStep> steps,
                                             const double min_distance_needed_for_lane_change)

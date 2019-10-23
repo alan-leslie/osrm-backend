@@ -13,7 +13,7 @@
 #include <cstddef>
 
 using EdgeData = osrm::util::NodeBasedDynamicGraph::EdgeData;
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
 using osrm::util::angularDeviation;
 
 namespace osrm
@@ -70,7 +70,7 @@ IntersectionHandler::IntersectionHandler(
 
 // Inspects an intersection and a turn from via_edge onto road from the possible basic turn types
 // (OnRamp, Continue, Turn) find the suitable turn type
-TurnType::Enum IntersectionHandler::findBasicTurnType(const EdgeID via_edge,
+util::guidance::TurnType::Enum IntersectionHandler::findBasicTurnType(const EdgeID via_edge,
                                                       const ConnectedRoad &road) const
 {
 
@@ -78,7 +78,7 @@ TurnType::Enum IntersectionHandler::findBasicTurnType(const EdgeID via_edge,
     bool onto_ramp = node_based_graph.GetEdgeData(road.eid).flags.road_classification.IsRampClass();
 
     if (!on_ramp && onto_ramp)
-        return TurnType::OnRamp;
+        return util::guidance::TurnType::OnRamp;
 
     const auto &in_name_id =
         node_data_container.GetAnnotation(node_based_graph.GetEdgeData(via_edge).annotation_data)
@@ -94,13 +94,13 @@ TurnType::Enum IntersectionHandler::findBasicTurnType(const EdgeID via_edge,
 
     if (!in_name_empty && !out_name_empty && same_name)
     {
-        return TurnType::Continue;
+        return util::guidance::TurnType::Continue;
     }
 
-    return TurnType::Turn;
+    return util::guidance::TurnType::Turn;
 }
 
-TurnType::Enum IntersectionHandler::areSameClasses(const EdgeID via_edge,
+util::guidance::TurnType::Enum IntersectionHandler::areSameClasses(const EdgeID via_edge,
                                                    const ConnectedRoad &road) const
 {
     const auto &in_classes =
@@ -113,20 +113,20 @@ TurnType::Enum IntersectionHandler::areSameClasses(const EdgeID via_edge,
     return in_classes == out_classes;
 }
 
-TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t num_roads,
+util::guidance::TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t num_roads,
                                                               const EdgeID via_edge,
                                                               const bool through_street,
                                                               const ConnectedRoad &road) const
 {
     const auto type = findBasicTurnType(via_edge, road);
-    if (type == TurnType::OnRamp)
+    if (type == util::guidance::TurnType::OnRamp)
     {
-        return {TurnType::OnRamp, getTurnDirection(road.angle)};
+        return {util::guidance::TurnType::OnRamp, getTurnDirection(road.angle)};
     }
 
     if (angularDeviation(road.angle, 0) < 0.01)
     {
-        return {TurnType::Continue, DirectionModifier::UTurn};
+        return {util::guidance::TurnType::Continue, util::guidance::DirectionModifier::UTurn};
     }
 
     // handle travel modes:
@@ -138,7 +138,7 @@ TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t 
             .travel_mode;
     const auto needs_notification = in_mode != out_mode;
 
-    if (type == TurnType::Turn)
+    if (type == util::guidance::TurnType::Turn)
     {
         const auto &in_classification = node_based_graph.GetEdgeData(via_edge).flags;
         const auto &in_data = node_data_container.GetAnnotation(
@@ -157,16 +157,16 @@ TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t 
                 // straight onto a road. This avoids confusion about merge directions on streets
                 // that could potentially also offer different choices
                 if (out_classification.road_classification.IsMotorwayClass())
-                    return {TurnType::Merge,
-                            road.angle > STRAIGHT_ANGLE ? DirectionModifier::SlightRight
-                                                        : DirectionModifier::SlightLeft};
+                    return {util::guidance::TurnType::Merge,
+                            road.angle > STRAIGHT_ANGLE ? util::guidance::DirectionModifier::SlightRight
+                                                        : util::guidance::DirectionModifier::SlightLeft};
                 else if (in_classification.road_classification.IsRampClass() &&
                          out_classification.road_classification.IsRampClass())
                 {
                     // This check is more a precaution than anything else. Our current travel modes
                     // cannot reach this, since all ramps are exposing the same travel type. But we
                     // could see toll-type at some point.
-                    return {in_mode == out_mode ? TurnType::Suppressed : TurnType::Notification,
+                    return {in_mode == out_mode ? util::guidance::TurnType::Suppressed : util::guidance::TurnType::Notification,
                             getTurnDirection(road.angle)};
                 }
                 else
@@ -187,16 +187,16 @@ TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t 
                         node_coordinates[node_based_graph.GetTarget(via_edge)],
                         node_coordinates[node_based_graph.GetTarget(road.eid)]);
 
-                    return {TurnType::Turn,
+                    return {util::guidance::TurnType::Turn,
                             (angularDeviation(road.angle, STRAIGHT_ANGLE) < NARROW_TURN_ANGLE &&
                              distance > 2 * MAX_COLLAPSE_DISTANCE)
-                                ? DirectionModifier::Straight
+                                ? util::guidance::DirectionModifier::Straight
                                 : getTurnDirection(road.angle)};
                 }
             }
             else
             {
-                return {needs_notification ? TurnType::Notification : TurnType::NewName,
+                return {needs_notification ? util::guidance::TurnType::Notification : util::guidance::TurnType::NewName,
                         getTurnDirection(road.angle)};
             }
         }
@@ -204,25 +204,25 @@ TurnInstruction IntersectionHandler::getInstructionForObvious(const std::size_t 
         else
         {
             if (needs_notification)
-                return {TurnType::Notification, getTurnDirection(road.angle)};
+                return {util::guidance::TurnType::Notification, getTurnDirection(road.angle)};
             else
-                return {num_roads == 2 && areSameClasses(via_edge, road) ? TurnType::NoTurn
-                                                                         : TurnType::Suppressed,
+                return {num_roads == 2 && areSameClasses(via_edge, road) ? util::guidance::TurnType::NoTurn
+                                                                         : util::guidance::TurnType::Suppressed,
                         getTurnDirection(road.angle)};
         }
     }
-    BOOST_ASSERT(type == TurnType::Continue);
+    BOOST_ASSERT(type == util::guidance::TurnType::Continue);
     if (needs_notification)
     {
-        return {TurnType::Notification, getTurnDirection(road.angle)};
+        return {util::guidance::TurnType::Notification, getTurnDirection(road.angle)};
     }
     if (num_roads > 2 || !areSameClasses(via_edge, road))
     {
-        return {TurnType::Suppressed, getTurnDirection(road.angle)};
+        return {util::guidance::TurnType::Suppressed, getTurnDirection(road.angle)};
     }
     else
     {
-        return {TurnType::NoTurn, getTurnDirection(road.angle)};
+        return {util::guidance::TurnType::NoTurn, getTurnDirection(road.angle)};
     }
 }
 
@@ -245,9 +245,9 @@ void IntersectionHandler::assignFork(const EdgeID via_edge,
     const auto same_mode_left = in_data.travel_mode == lhs_data.travel_mode;
     const auto same_mode_right = in_data.travel_mode == rhs_data.travel_mode;
     const auto suppressed_left_type =
-        same_mode_left ? TurnType::Suppressed : TurnType::Notification;
+        same_mode_left ? util::guidance::TurnType::Suppressed : util::guidance::TurnType::Notification;
     const auto suppressed_right_type =
-        same_mode_right ? TurnType::Suppressed : TurnType::Notification;
+        same_mode_right ? util::guidance::TurnType::Suppressed : util::guidance::TurnType::Notification;
     if ((angularDeviation(left.angle, STRAIGHT_ANGLE) < MAXIMAL_ALLOWED_NO_TURN_DEVIATION &&
          angularDeviation(right.angle, STRAIGHT_ANGLE) > FUZZY_ANGLE_DIFFERENCE))
     {
@@ -258,29 +258,29 @@ void IntersectionHandler::assignFork(const EdgeID via_edge,
             {
                 left.instruction = getInstructionForObvious(3, via_edge, false, left);
                 right.instruction = {findBasicTurnType(via_edge, right),
-                                     DirectionModifier::SlightRight};
+                                     util::guidance::DirectionModifier::SlightRight};
             }
             else
             {
                 if (low_priority_left && !low_priority_right)
                 {
                     left.instruction = {findBasicTurnType(via_edge, left),
-                                        DirectionModifier::SlightLeft};
+                                        util::guidance::DirectionModifier::SlightLeft};
                     right.instruction = {findBasicTurnType(via_edge, right),
-                                         DirectionModifier::SlightRight};
+                                         util::guidance::DirectionModifier::SlightRight};
                 }
                 else
                 {
-                    left.instruction = {TurnType::Fork, DirectionModifier::SlightLeft};
-                    right.instruction = {TurnType::Fork, DirectionModifier::SlightRight};
+                    left.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightLeft};
+                    right.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightRight};
                 }
             }
         }
         else
         {
-            left.instruction = {suppressed_left_type, DirectionModifier::Straight};
+            left.instruction = {suppressed_left_type, util::guidance::DirectionModifier::Straight};
             right.instruction = {findBasicTurnType(via_edge, right),
-                                 DirectionModifier::SlightRight};
+                                 util::guidance::DirectionModifier::SlightRight};
         }
     }
     else if (angularDeviation(right.angle, STRAIGHT_ANGLE) < MAXIMAL_ALLOWED_NO_TURN_DEVIATION &&
@@ -296,7 +296,7 @@ void IntersectionHandler::assignFork(const EdgeID via_edge,
                 if (low_priority_left && !low_priority_right)
                 {
                     left.instruction = {findBasicTurnType(via_edge, left),
-                                        DirectionModifier::SlightLeft};
+                                        util::guidance::DirectionModifier::SlightLeft};
                     right.instruction = getInstructionForObvious(3, via_edge, false, right);
                 }
                 else
@@ -304,52 +304,52 @@ void IntersectionHandler::assignFork(const EdgeID via_edge,
                     if (low_priority_right && !low_priority_left)
                     {
                         left.instruction = {findBasicTurnType(via_edge, left),
-                                            DirectionModifier::SlightLeft};
+                                            util::guidance::DirectionModifier::SlightLeft};
                         right.instruction = {findBasicTurnType(via_edge, right),
-                                             DirectionModifier::SlightRight};
+                                             util::guidance::DirectionModifier::SlightRight};
                     }
                     else
                     {
-                        right.instruction = {TurnType::Fork, DirectionModifier::SlightRight};
-                        left.instruction = {TurnType::Fork, DirectionModifier::SlightLeft};
+                        right.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightRight};
+                        left.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightLeft};
                     }
                 }
             }
             else
             {
-                right.instruction = {suppressed_right_type, DirectionModifier::Straight};
+                right.instruction = {suppressed_right_type, util::guidance::DirectionModifier::Straight};
                 left.instruction = {findBasicTurnType(via_edge, left),
-                                    DirectionModifier::SlightLeft};
+                                    util::guidance::DirectionModifier::SlightLeft};
             }
         }
     }
     // left side of fork
     if (low_priority_right && !low_priority_left)
-        left.instruction = {suppressed_left_type, DirectionModifier::SlightLeft};
+        left.instruction = {suppressed_left_type, util::guidance::DirectionModifier::SlightLeft};
     else
     {
         if (low_priority_left && !low_priority_right)
         {
-            left.instruction = {TurnType::Turn, DirectionModifier::SlightLeft};
+            left.instruction = {util::guidance::TurnType::Turn, util::guidance::DirectionModifier::SlightLeft};
         }
         else
         {
-            left.instruction = {TurnType::Fork, DirectionModifier::SlightLeft};
+            left.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightLeft};
         }
     }
 
     // right side of fork
     if (low_priority_left && !low_priority_right)
-        right.instruction = {suppressed_right_type, DirectionModifier::SlightRight};
+        right.instruction = {suppressed_right_type, util::guidance::DirectionModifier::SlightRight};
     else
     {
         if (low_priority_right && !low_priority_left)
         {
-            right.instruction = {TurnType::Turn, DirectionModifier::SlightRight};
+            right.instruction = {util::guidance::TurnType::Turn, util::guidance::DirectionModifier::SlightRight};
         }
         else
         {
-            right.instruction = {TurnType::Fork, DirectionModifier::SlightRight};
+            right.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightRight};
         }
     }
 }
@@ -369,29 +369,29 @@ void IntersectionHandler::assignFork(const EdgeID via_edge,
             node_data_container
                 .GetAnnotation(node_based_graph.GetEdgeData(road.eid).annotation_data)
                 .travel_mode;
-        return in_mode == out_mode ? TurnType::Suppressed : TurnType::Notification;
+        return in_mode == out_mode ? util::guidance::TurnType::Suppressed : util::guidance::TurnType::Notification;
     };
 
     if (left.entry_allowed && center.entry_allowed && right.entry_allowed)
     {
-        left.instruction = {TurnType::Fork, DirectionModifier::SlightLeft};
+        left.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightLeft};
         if (angularDeviation(center.angle, 180) < MAXIMAL_ALLOWED_NO_TURN_DEVIATION)
         {
             if (detail::requiresAnnouncement(
                     node_based_graph, node_data_container, via_edge, center.eid))
             {
-                center.instruction = {TurnType::Fork, DirectionModifier::Straight};
+                center.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::Straight};
             }
             else
             {
-                center.instruction = {suppressed_type(center), DirectionModifier::Straight};
+                center.instruction = {suppressed_type(center), util::guidance::DirectionModifier::Straight};
             }
         }
         else
         {
-            center.instruction = {TurnType::Fork, DirectionModifier::Straight};
+            center.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::Straight};
         }
-        right.instruction = {TurnType::Fork, DirectionModifier::SlightRight};
+        right.instruction = {util::guidance::TurnType::Fork, util::guidance::DirectionModifier::SlightRight};
     }
     else if (left.entry_allowed)
     {

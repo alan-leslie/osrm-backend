@@ -2,7 +2,7 @@
 #define ENGINE_RESPONSE_OBJECTS_HPP_
 
 #include "extractor/travel_mode.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/guidance/leg_geometry.hpp"
 #include "engine/guidance/route.hpp"
 #include "engine/guidance/route_leg.hpp"
@@ -37,7 +37,7 @@ namespace detail
 inline bool isValidModifier(const guidance::StepManeuver maneuver)
 {
     return (maneuver.waypoint_type == guidance::WaypointType::None ||
-            maneuver.instruction.direction_modifier != osrm::guidance::DirectionModifier::UTurn);
+            maneuver.instruction.direction_modifier != osrm::util::guidance::DirectionModifier::UTurn);
 }
 
 inline bool hasValidLanes(const guidance::IntermediateIntersection &intersection)

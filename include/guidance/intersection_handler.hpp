@@ -65,9 +65,9 @@ class IntersectionHandler
         graph_walker; // for skipping traffic signal, distances etc.
 
     // Decide on a basic turn types
-    TurnType::Enum findBasicTurnType(const EdgeID via_edge, const ConnectedRoad &candidate) const;
+    util::guidance::TurnType::Enum findBasicTurnType(const EdgeID via_edge, const ConnectedRoad &candidate) const;
 
-    TurnType::Enum areSameClasses(const EdgeID via_edge, const ConnectedRoad &road) const;
+    util::guidance::TurnType::Enum areSameClasses(const EdgeID via_edge, const ConnectedRoad &road) const;
 
     template <typename IntersectionType>
     inline bool IsDistinctNarrowTurn(const EdgeID via_edge,
@@ -93,7 +93,7 @@ class IntersectionHandler
     // candidate when coming from a via_edge and determines the best instruction to emit.
     // `through_street` indicates if the street turned onto is a through sreet (think mergees and
     // similar)
-    TurnInstruction getInstructionForObvious(const std::size_t number_of_candidates,
+    util::guidance::TurnInstruction getInstructionForObvious(const std::size_t number_of_candidates,
                                              const EdgeID via_edge,
                                              const bool through_street,
                                              const ConnectedRoad &candidate) const;
@@ -418,7 +418,7 @@ IntersectionHandler::IsDistinctWideTurn(const EdgeID via_edge,
         const auto &compare_data = node_based_graph.GetEdgeData(road.eid);
         const auto compare_deviation = util::angularDeviation(road.angle, STRAIGHT_ANGLE);
         const auto is_compare_straight =
-            getTurnDirection(road.angle) == DirectionModifier::Straight;
+            util::guidance::getTurnDirection(road.angle) == util::guidance::DirectionModifier::Straight;
 
         // 2. Don't consider similarity if a compare road is non-straight and has lower class
         if (!is_compare_straight && roadHasLowerClass(via_edge_data, candidate_data, compare_data))
@@ -455,7 +455,7 @@ IntersectionHandler::IsDistinctWideTurn(const EdgeID via_edge,
             const auto road_to_candidate_angle =
                 angleBetween(reverse(road.initial_bearing), candidate->initial_bearing);
             const auto is_straight_road_to_candidate =
-                getTurnDirection(road_to_candidate_angle) == DirectionModifier::Straight;
+                util::guidance::getTurnDirection(road_to_candidate_angle) == util::guidance::DirectionModifier::Straight;
 
             if (!is_straight_road_to_candidate &&
                 road_deviation_initial > DISTINCTION_RATIO * candidate_deviation_initial)

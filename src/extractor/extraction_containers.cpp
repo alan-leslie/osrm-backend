@@ -798,59 +798,59 @@ void ExtractionContainers::PrepareManeuverOverrides()
 
     const auto strings_to_turn_type_and_direction = [](const std::string &turn_string,
                                                        const std::string &direction_string) {
-        auto result = std::make_pair(guidance::TurnType::MaxTurnType,
-                                     guidance::DirectionModifier::MaxDirectionModifier);
+        auto result = std::make_pair(util::guidance::TurnType::MaxTurnType,
+                                     util::guidance::DirectionModifier::MaxDirectionModifier);
 
         if (turn_string == "uturn")
         {
-            result.first = guidance::TurnType::Turn;
-            result.second = guidance::DirectionModifier::UTurn;
+            result.first = util::guidance::TurnType::Turn;
+            result.second = util::guidance::DirectionModifier::UTurn;
         }
         else if (turn_string == "continue")
         {
-            result.first = guidance::TurnType::Continue;
+            result.first = util::guidance::TurnType::Continue;
         }
         else if (turn_string == "turn")
         {
-            result.first = guidance::TurnType::Turn;
+            result.first = util::guidance::TurnType::Turn;
         }
         else if (turn_string == "fork")
         {
-            result.first = guidance::TurnType::Fork;
+            result.first = util::guidance::TurnType::Fork;
         }
         else if (turn_string == "suppress")
         {
-            result.first = guidance::TurnType::Suppressed;
+            result.first = util::guidance::TurnType::Suppressed;
         }
 
         // Directions
         if (direction_string == "left")
         {
-            result.second = guidance::DirectionModifier::Left;
+            result.second = util::guidance::DirectionModifier::Left;
         }
         else if (direction_string == "slight_left")
         {
-            result.second = guidance::DirectionModifier::SlightLeft;
+            result.second = util::guidance::DirectionModifier::SlightLeft;
         }
         else if (direction_string == "sharp_left")
         {
-            result.second = guidance::DirectionModifier::SharpLeft;
+            result.second = util::guidance::DirectionModifier::SharpLeft;
         }
         else if (direction_string == "sharp_right")
         {
-            result.second = guidance::DirectionModifier::SharpRight;
+            result.second = util::guidance::DirectionModifier::SharpRight;
         }
         else if (direction_string == "slight_right")
         {
-            result.second = guidance::DirectionModifier::SlightRight;
+            result.second = util::guidance::DirectionModifier::SlightRight;
         }
         else if (direction_string == "right")
         {
-            result.second = guidance::DirectionModifier::Right;
+            result.second = util::guidance::DirectionModifier::Right;
         }
         else if (direction_string == "straight")
         {
-            result.second = guidance::DirectionModifier::Straight;
+            result.second = util::guidance::DirectionModifier::Straight;
         }
 
         return result;
@@ -867,8 +867,8 @@ void ExtractionContainers::PrepareManeuverOverrides()
         auto maneuver_override =
             UnresolvedManeuverOverride{{},
                                        osm_node_to_internal_nbn(external.via_node),
-                                       guidance::TurnType::Invalid,
-                                       guidance::DirectionModifier::MaxDirectionModifier};
+                                       util::guidance::TurnType::Invalid,
+                                       util::guidance::DirectionModifier::MaxDirectionModifier};
 
         // Convert Way IDs into node-based-node IDs
         // We iterate from back to front here because the first node in the node_sequence

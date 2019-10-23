@@ -2,7 +2,8 @@
 
 #include "util/assert.hpp"
 
-using osrm::guidance::getTurnDirection;
+using osrm::util::guidance::getTurnDirection;
+using TurnInstruction = osrm::util::guidance::TurnInstruction;
 using osrm::util::angularDeviation;
 
 namespace osrm
@@ -73,20 +74,20 @@ operator()(const NodeID nid, const EdgeID source_edge_id, Intersection intersect
     if (road->instruction == TurnInstruction::INVALID())
         return intersection;
 
-    OSRM_ASSERT(road->instruction.type == TurnType::Turn, node_coordinates[nid]);
+    OSRM_ASSERT(road->instruction.type == util::guidance::TurnType::Turn, node_coordinates[nid]);
 
     road->instruction.type =
-        isSameName(source_edge_id, road->eid) ? TurnType::NoTurn : TurnType::NewName;
+        isSameName(source_edge_id, road->eid) ? util::guidance::TurnType::NoTurn : util::guidance::TurnType::NewName;
 
-    if (road->instruction.direction_modifier == DirectionModifier::Straight)
+    if (road->instruction.direction_modifier == util::guidance::DirectionModifier::Straight)
     {
         std::for_each(intersection.begin() + 1, road, [](auto &side_road) {
-            if (side_road.instruction.direction_modifier == DirectionModifier::Straight)
-                side_road.instruction.direction_modifier = DirectionModifier::SlightRight;
+            if (side_road.instruction.direction_modifier == util::guidance::DirectionModifier::Straight)
+                side_road.instruction.direction_modifier = util::guidance::DirectionModifier::SlightRight;
         });
         std::for_each(road + 1, intersection.end(), [](auto &side_road) {
-            if (side_road.instruction.direction_modifier == DirectionModifier::Straight)
-                side_road.instruction.direction_modifier = DirectionModifier::SlightLeft;
+            if (side_road.instruction.direction_modifier == util::guidance::DirectionModifier::Straight)
+                side_road.instruction.direction_modifier = util::guidance::DirectionModifier::SlightLeft;
         });
     }
 

@@ -5,7 +5,7 @@
 #include "extractor/node_data_container.hpp"
 #include "extractor/query_node.hpp"
 #include "guidance/intersection.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "guidance/turn_lane_data.hpp"
 #include "engine/guidance/route_step.hpp"
 #include "util/node_based_graph.hpp"

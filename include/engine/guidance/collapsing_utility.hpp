@@ -1,7 +1,7 @@
 #ifndef OSRM_ENGINE_GUIDANCE_COLLAPSING_UTILITY_HPP_
 #define OSRM_ENGINE_GUIDANCE_COLLAPSING_UTILITY_HPP_
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "engine/guidance/route_step.hpp"
 #include "util/attributes.hpp"
 #include "util/bearing.hpp"
@@ -28,7 +28,7 @@ const double constexpr STRAIGHT_ANGLE = 180.;
 // check if a step is completely without turn type
 inline bool hasTurnType(const RouteStep &step)
 {
-    return step.maneuver.instruction.type != osrm::guidance::TurnType::NoTurn;
+    return step.maneuver.instruction.type != osrm::util::guidance::TurnType::NoTurn;
 }
 inline bool hasWaypointType(const RouteStep &step)
 {
@@ -65,13 +65,13 @@ inline RouteStepIterator findNextTurn(RouteStepIterator current_step)
 }
 
 // alias for comparisons
-inline bool hasTurnType(const RouteStep &step, const osrm::guidance::TurnType::Enum type)
+inline bool hasTurnType(const RouteStep &step, const osrm::util::guidance::TurnType::Enum type)
 {
     return type == step.maneuver.instruction.type;
 }
 // alias for comparisons
 inline bool hasModifier(const RouteStep &step,
-                        const osrm::guidance::DirectionModifier::Enum modifier)
+                        const osrm::util::guidance::DirectionModifier::Enum modifier)
 {
     return modifier == step.maneuver.instruction.direction_modifier;
 }
@@ -95,18 +95,18 @@ inline std::size_t numberOfAllowedTurns(const RouteStep &step)
 // fulfill:
 inline bool isTrafficLightStep(const RouteStep &step)
 {
-    return hasTurnType(step, osrm::guidance::TurnType::Suppressed) &&
+    return hasTurnType(step, osrm::util::guidance::TurnType::Suppressed) &&
            numberOfAvailableTurns(step) == 2 && numberOfAllowedTurns(step) == 1;
 }
 
 // alias for readability
-inline void setInstructionType(RouteStep &step, const osrm::guidance::TurnType::Enum type)
+inline void setInstructionType(RouteStep &step, const osrm::util::guidance::TurnType::Enum type)
 {
     step.maneuver.instruction.type = type;
 }
 
 // alias for readability
-inline void setModifier(RouteStep &step, const osrm::guidance::DirectionModifier::Enum modifier)
+inline void setModifier(RouteStep &step, const osrm::util::guidance::DirectionModifier::Enum modifier)
 {
     step.maneuver.instruction.direction_modifier = modifier;
 }
@@ -156,12 +156,12 @@ inline bool haveSameName(const RouteStep &lhs, const RouteStep &rhs)
 inline bool areSameSide(const RouteStep &lhs, const RouteStep &rhs)
 {
     const auto is_left = [](const RouteStep &step) {
-        return hasModifier(step, osrm::guidance::DirectionModifier::Straight) ||
+        return hasModifier(step, osrm::util::guidance::DirectionModifier::Straight) ||
                hasLeftModifier(step.maneuver.instruction);
     };
 
     const auto is_right = [](const RouteStep &step) {
-        return hasModifier(step, osrm::guidance::DirectionModifier::Straight) ||
+        return hasModifier(step, osrm::util::guidance::DirectionModifier::Straight) ||
                hasRightModifier(step.maneuver.instruction);
     };
 
@@ -179,7 +179,7 @@ inline std::vector<RouteStep> removeNoTurnInstructions(std::vector<RouteStep> st
 
     // keep valid instructions
     const auto not_is_valid = [](const RouteStep &step) {
-        return step.maneuver.instruction == osrm::guidance::TurnInstruction::NO_TURN() &&
+        return step.maneuver.instruction == osrm::util::guidance::TurnInstruction::NO_TURN() &&
                step.maneuver.waypoint_type == WaypointType::None;
     };
 

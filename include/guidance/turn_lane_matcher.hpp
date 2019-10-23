@@ -2,7 +2,7 @@
 #define OSRM_GUIDANCE_TURN_LANE_MATCHER_HPP_
 
 #include "guidance/intersection.hpp"
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 #include "guidance/turn_lane_data.hpp"
 
 #include "util/attributes.hpp"
@@ -17,10 +17,10 @@ namespace lanes
 {
 
 // Translate Turn Lane Tags into a matching modifier
-DirectionModifier::Enum getMatchingModifier(const extractor::TurnLaneType::Mask tag);
+util::guidance::DirectionModifier::Enum getMatchingModifier(const extractor::TurnLaneType::Mask tag);
 
 // check whether a match of a given tag and a turn instruction can be seen as valid
-bool isValidMatch(const extractor::TurnLaneType::Mask tag, const TurnInstruction instruction);
+bool isValidMatch(const extractor::TurnLaneType::Mask tag, const util::guidance::TurnInstruction instruction);
 
 // localisation of the best possible match for a tag
 typename Intersection::const_iterator findBestMatch(const extractor::TurnLaneType::Mask tag,

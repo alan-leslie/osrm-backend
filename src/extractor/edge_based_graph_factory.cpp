@@ -609,7 +609,7 @@ void EdgeBasedGraphFactory::GenerateEdgeExpandedEdges(
             // compute weight and duration penalties
             const auto is_traffic_light = m_traffic_lights.count(intersection_node);
             const auto is_uturn =
-                guidance::getTurnDirection(turn_angle) == guidance::DirectionModifier::UTurn;
+                util::guidance::getTurnDirection(turn_angle) == util::guidance::DirectionModifier::UTurn;
 
             ExtractionTurn extracted_turn(
                 // general info
@@ -819,8 +819,8 @@ void EdgeBasedGraphFactory::GenerateEdgeExpandedEdges(
                             };
 
                             // all connected roads on the right of a u turn
-                            const auto is_uturn = guidance::getTurnDirection(turn->angle) ==
-                                                  guidance::DirectionModifier::UTurn;
+                            const auto is_uturn = util::guidance::getTurnDirection(turn->angle) ==
+                                                  util::guidance::DirectionModifier::UTurn;
                             if (is_uturn)
                             {
                                 if (turn != intersection_view.begin())

@@ -1,4 +1,4 @@
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "engine/plugins/plugin_base.hpp"
 #include "engine/plugins/plugin_base.hpp"
@@ -411,10 +411,10 @@ class TurnsLayerFeatureBuilder : public vtzero::point_feature_builder
 
     void set_weight(float value) { add_property(m_layer.key_weight, m_layer.float_index(value)); }
 
-    void set_turn(osrm::guidance::TurnInstruction value)
+    void set_turn(osrm::util::guidance::TurnInstruction value)
     {
-        const auto type = osrm::guidance::internalInstructionTypeToString(value.type);
-        const auto modifier = osrm::guidance::instructionModifierToString(value.direction_modifier);
+        const auto type = osrm::util::guidance::internalInstructionTypeToString(value.type);
+        const auto modifier = osrm::util::guidance::instructionModifierToString(value.direction_modifier);
         add_property(
             m_layer.key_turn_type,
             m_layer.string_index(vtzero::encoded_property_value{type.data(), type.size()}));

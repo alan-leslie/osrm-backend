@@ -297,7 +297,7 @@ class ContiguousInternalMemoryDataFacadeBase : public BaseDataFacade
         return m_turn_duration_penalties[id];
     }
 
-    osrm::guidance::TurnInstruction
+    osrm::util::guidance::TurnInstruction
     GetTurnInstructionForEdgeID(const EdgeID id) const override final
     {
         return turn_data.GetTurnInstruction(id);
@@ -542,11 +542,11 @@ class ContiguousInternalMemoryDataFacadeBase : public BaseDataFacade
         return intersection_bearings_view.GetBearingClass(node);
     }
 
-    guidance::TurnBearing PreTurnBearing(const EdgeID eid) const override final
+    util::guidance::TurnBearing PreTurnBearing(const EdgeID eid) const override final
     {
         return turn_data.GetPreTurnBearing(eid);
     }
-    guidance::TurnBearing PostTurnBearing(const EdgeID eid) const override final
+    util::guidance::TurnBearing PostTurnBearing(const EdgeID eid) const override final
     {
         return turn_data.GetPostTurnBearing(eid);
     }

@@ -20,7 +20,7 @@
 
 #include "engine/internal_route_result.hpp"
 
-#include "guidance/turn_instruction.hpp"
+#include "util/guidance/turn_instruction.hpp"
 
 #include "util/coordinate.hpp"
 #include "util/integer_range.hpp"
@@ -238,55 +238,55 @@ class RouteAPI : public BaseAPI
         }
     }
 
-    fbresult::ManeuverType TurnTypeToFB(osrm::guidance::TurnType::Enum turn) const
+    fbresult::ManeuverType TurnTypeToFB(osrm::util::guidance::TurnType::Enum turn) const
     {
-        static std::map<osrm::guidance::TurnType::Enum, fbresult::ManeuverType> mappings = {
-            {osrm::guidance::TurnType::Invalid, fbresult::ManeuverType_Notification},
-            {osrm::guidance::TurnType::NewName, fbresult::ManeuverType_NewName},
-            {osrm::guidance::TurnType::Continue, fbresult::ManeuverType_Continue},
-            {osrm::guidance::TurnType::Turn, fbresult::ManeuverType_Turn},
-            {osrm::guidance::TurnType::Merge, fbresult::ManeuverType_Merge},
-            {osrm::guidance::TurnType::OnRamp, fbresult::ManeuverType_OnRamp},
-            {osrm::guidance::TurnType::OffRamp, fbresult::ManeuverType_OffRamp},
-            {osrm::guidance::TurnType::Fork, fbresult::ManeuverType_Fork},
-            {osrm::guidance::TurnType::EndOfRoad, fbresult::ManeuverType_EndOfRoad},
-            {osrm::guidance::TurnType::Notification, fbresult::ManeuverType_Notification},
-            {osrm::guidance::TurnType::EnterRoundabout, fbresult::ManeuverType_Roundabout},
-            {osrm::guidance::TurnType::EnterAndExitRoundabout,
+        static std::map<osrm::util::guidance::TurnType::Enum, fbresult::ManeuverType> mappings = {
+            {osrm::util::guidance::TurnType::Invalid, fbresult::ManeuverType_Notification},
+            {osrm::util::guidance::TurnType::NewName, fbresult::ManeuverType_NewName},
+            {osrm::util::guidance::TurnType::Continue, fbresult::ManeuverType_Continue},
+            {osrm::util::guidance::TurnType::Turn, fbresult::ManeuverType_Turn},
+            {osrm::util::guidance::TurnType::Merge, fbresult::ManeuverType_Merge},
+            {osrm::util::guidance::TurnType::OnRamp, fbresult::ManeuverType_OnRamp},
+            {osrm::util::guidance::TurnType::OffRamp, fbresult::ManeuverType_OffRamp},
+            {osrm::util::guidance::TurnType::Fork, fbresult::ManeuverType_Fork},
+            {osrm::util::guidance::TurnType::EndOfRoad, fbresult::ManeuverType_EndOfRoad},
+            {osrm::util::guidance::TurnType::Notification, fbresult::ManeuverType_Notification},
+            {osrm::util::guidance::TurnType::EnterRoundabout, fbresult::ManeuverType_Roundabout},
+            {osrm::util::guidance::TurnType::EnterAndExitRoundabout,
              fbresult::ManeuverType_ExitRoundabout},
-            {osrm::guidance::TurnType::EnterRotary, fbresult::ManeuverType_Rotary},
-            {osrm::guidance::TurnType::EnterAndExitRotary, fbresult::ManeuverType_ExitRotary},
-            {osrm::guidance::TurnType::EnterRoundaboutIntersection,
+            {osrm::util::guidance::TurnType::EnterRotary, fbresult::ManeuverType_Rotary},
+            {osrm::util::guidance::TurnType::EnterAndExitRotary, fbresult::ManeuverType_ExitRotary},
+            {osrm::util::guidance::TurnType::EnterRoundaboutIntersection,
              fbresult::ManeuverType_Roundabout},
-            {osrm::guidance::TurnType::EnterAndExitRoundaboutIntersection,
+            {osrm::util::guidance::TurnType::EnterAndExitRoundaboutIntersection,
              fbresult::ManeuverType_ExitRoundabout},
-            {osrm::guidance::TurnType::NoTurn, fbresult::ManeuverType_Notification},
-            {osrm::guidance::TurnType::Suppressed, fbresult::ManeuverType_Notification},
-            {osrm::guidance::TurnType::EnterRoundaboutAtExit, fbresult::ManeuverType_Roundabout},
-            {osrm::guidance::TurnType::ExitRoundabout, fbresult::ManeuverType_ExitRoundabout},
-            {osrm::guidance::TurnType::EnterRotaryAtExit, fbresult::ManeuverType_Rotary},
-            {osrm::guidance::TurnType::ExitRotary, fbresult::ManeuverType_ExitRotary},
-            {osrm::guidance::TurnType::EnterRoundaboutIntersectionAtExit,
+            {osrm::util::guidance::TurnType::NoTurn, fbresult::ManeuverType_Notification},
+            {osrm::util::guidance::TurnType::Suppressed, fbresult::ManeuverType_Notification},
+            {osrm::util::guidance::TurnType::EnterRoundaboutAtExit, fbresult::ManeuverType_Roundabout},
+            {osrm::util::guidance::TurnType::ExitRoundabout, fbresult::ManeuverType_ExitRoundabout},
+            {osrm::util::guidance::TurnType::EnterRotaryAtExit, fbresult::ManeuverType_Rotary},
+            {osrm::util::guidance::TurnType::ExitRotary, fbresult::ManeuverType_ExitRotary},
+            {osrm::util::guidance::TurnType::EnterRoundaboutIntersectionAtExit,
              fbresult::ManeuverType_Roundabout},
-            {osrm::guidance::TurnType::ExitRoundaboutIntersection,
+            {osrm::util::guidance::TurnType::ExitRoundaboutIntersection,
              fbresult::ManeuverType_ExitRoundabout},
-            {osrm::guidance::TurnType::StayOnRoundabout, fbresult::ManeuverType_RoundaboutTurn},
-            {osrm::guidance::TurnType::Sliproad, fbresult::ManeuverType_Notification},
-            {osrm::guidance::TurnType::MaxTurnType, fbresult::ManeuverType_Notification}};
+            {osrm::util::guidance::TurnType::StayOnRoundabout, fbresult::ManeuverType_RoundaboutTurn},
+            {osrm::util::guidance::TurnType::Sliproad, fbresult::ManeuverType_Notification},
+            {osrm::util::guidance::TurnType::MaxTurnType, fbresult::ManeuverType_Notification}};
         return mappings[turn];
     }
 
-    fbresult::Turn TurnModifierToFB(osrm::guidance::DirectionModifier::Enum modifier) const
+    fbresult::Turn TurnModifierToFB(osrm::util::guidance::DirectionModifier::Enum modifier) const
     {
-        static std::map<osrm::guidance::DirectionModifier::Enum, fbresult::Turn> mappings = {
-            {osrm::guidance::DirectionModifier::UTurn, fbresult::Turn_UTurn},
-            {osrm::guidance::DirectionModifier::SharpRight, fbresult::Turn_SharpRight},
-            {osrm::guidance::DirectionModifier::Right, fbresult::Turn_Right},
-            {osrm::guidance::DirectionModifier::SlightRight, fbresult::Turn_SlightRight},
-            {osrm::guidance::DirectionModifier::Straight, fbresult::Turn_Straight},
-            {osrm::guidance::DirectionModifier::SlightLeft, fbresult::Turn_SlightLeft},
-            {osrm::guidance::DirectionModifier::Left, fbresult::Turn_Left},
-            {osrm::guidance::DirectionModifier::SharpLeft, fbresult::Turn_SharpLeft},
+        static std::map<osrm::util::guidance::DirectionModifier::Enum, fbresult::Turn> mappings = {
+            {osrm::util::guidance::DirectionModifier::UTurn, fbresult::Turn_UTurn},
+            {osrm::util::guidance::DirectionModifier::SharpRight, fbresult::Turn_SharpRight},
+            {osrm::util::guidance::DirectionModifier::Right, fbresult::Turn_Right},
+            {osrm::util::guidance::DirectionModifier::SlightRight, fbresult::Turn_SlightRight},
+            {osrm::util::guidance::DirectionModifier::Straight, fbresult::Turn_Straight},
+            {osrm::util::guidance::DirectionModifier::SlightLeft, fbresult::Turn_SlightLeft},
+            {osrm::util::guidance::DirectionModifier::Left, fbresult::Turn_Left},
+            {osrm::util::guidance::DirectionModifier::SharpLeft, fbresult::Turn_SharpLeft},
         };
         return mappings[modifier];
     }

@@ -10,7 +10,7 @@ namespace engine
 {
 namespace guidance
 {
-using namespace osrm::guidance;
+using namespace osrm::util::guidance;
 
 std::vector<RouteStep> suppressShortNameSegments(std::vector<RouteStep> steps)
 {
